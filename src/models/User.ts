@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
 username: {
     type: String,
     required: true
@@ -17,3 +17,7 @@ password: {
 
 }
 })
+
+const UserModel = (mongoose.models.User ) || mongoose.model("User", UserSchema)
+
+export default UserModel
