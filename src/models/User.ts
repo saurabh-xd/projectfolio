@@ -16,7 +16,8 @@ password: {
     required: true
 
 }
-})
+},
+{timestamps: true})
 
 const UserModel = (mongoose.models.User ) || mongoose.model("User", UserSchema)
 
