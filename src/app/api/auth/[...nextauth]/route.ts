@@ -43,10 +43,47 @@ const handler = NextAuth({
     }),
   ],
 
+   callbacks: {
+    async signIn({ user, account }: any) {
+      if (account.provider !== "credentials") {
+        await connectDB();
+
+        const existingUser = await User.findOne({ email: user.email });
+        
+        if (!existingUser) {
+          await User.create({
+            email: user.email,
+            username: user.name,
+            provider: account.provider,
+          });
+        }
+      }
+      return true;
+    },
+
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+      }
+      return token;
+    },
+
+    async session({ session, token }: any) {
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+      }
+      return session;
+    },
+  },
+
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login", // optional custom login page
   },
+
+
 });
 
 export { handler as GET, handler as POST };

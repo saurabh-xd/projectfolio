@@ -4,6 +4,7 @@ import { Form, FormControl,  FormField, FormItem, FormLabel, FormMessage } from 
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import {  useForm } from 'react-hook-form'
@@ -98,6 +99,15 @@ function Signup() {
         <Button type="submit" className='cursor-pointer'>Sign Up</Button>
       </form>
     </Form>
+
+    <div className="mt-4 text-center">
+              <p>
+                Already a member?{' '}
+                <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
+                Sign in
+                </Link>
+              </p>
+          </div>
         </div>
     </div>
   

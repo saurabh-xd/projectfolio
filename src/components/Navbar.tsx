@@ -22,7 +22,7 @@ function Navbar() {
   return (
     <nav className="p-4 md:p-6 shadow-md">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        <Link href="/" className="text-xl font-bold mb-4 md:mb-0">
+        <Link href="/" className="text-2xl font-bold mb-4 md:mb-0">
   ProjectFolio
 </Link>
 
@@ -54,9 +54,13 @@ function Navbar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-              <Button className="w-full md:w-auto" >
-                Logout
+
+          <Link href='sign-in'>
+           <Button className="w-full md:w-auto cursor-pointer" >
+                SIGN IN
               </Button>
+          </Link>
+             
             </>
           
           

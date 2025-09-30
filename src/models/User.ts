@@ -13,9 +13,13 @@ email: {
 },
 password: {
     type: String,
-    required: true
+    required: false
 
-}
+},
+
+    provider: {
+        type: String
+    }
 },
 {timestamps: true})
 
