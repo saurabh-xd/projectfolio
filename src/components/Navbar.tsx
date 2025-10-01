@@ -31,12 +31,22 @@ function Navbar() {
           
          
             <>
-              <span className="mr-4 mt-1.5 font-bold">
-                Welcome
-              </span>
-                <DropdownMenu>
+                 <Link href='upload'>
+           <Button className="w-full md:w-auto cursor-pointer rounded-2xl border" >
+                Upload Project
+              </Button>
+          </Link>
+              
+
+          <Link href='sign-in'>
+           <Button className="w-full md:w-auto cursor-pointer rounded-2xl border" >
+                SIGN IN
+              </Button>
+          </Link>
+
+            <DropdownMenu >
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" className="rounded-3xl cursor-pointer">
                 <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
                 <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
                 <span className="sr-only">Toggle theme</span>
@@ -54,12 +64,6 @@ function Navbar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Link href='sign-in'>
-           <Button className="w-full md:w-auto cursor-pointer" >
-                SIGN IN
-              </Button>
-          </Link>
              
             </>
           
