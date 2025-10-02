@@ -53,7 +53,7 @@ const handler = NextAuth({
         if (!existingUser) {
           await User.create({
             email: user.email,
-            username: user.name,
+            username: user.username,
             provider: account.provider,
           });
         }
@@ -64,7 +64,7 @@ const handler = NextAuth({
     async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id;
-        token.name = user.name;
+        token.username = user.username;
       }
       return token;
     },
@@ -72,7 +72,7 @@ const handler = NextAuth({
     async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id;
-        session.user.name = token.name;
+        session.user.username = token.username;
       }
       return session;
     },

@@ -148,7 +148,7 @@ function Page() {
               )}
             />
 
-            <Button type="submit" className="cursor-pointer">Submit</Button>
+            <Button type="submit" className="cursor-pointer">Upload</Button>
           </form>
         </Form>
       </div>
