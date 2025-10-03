@@ -1,13 +1,18 @@
 'use client'
 
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import {  User, Mail, FolderKanban, LogIn  } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 
 function ProfilePage() {
   const {data: session, status} = useSession();
 
-  
+  const logout = async ()=> {
+    await signOut({ callbackUrl: "/" })
+    toast("Logout Successful")
+  }
   
   if(status === "loading"){
      return (
@@ -84,6 +89,17 @@ function ProfilePage() {
                   <p className="text-gray-900 font-medium">{session.user?.email}</p>
                 </div>
               </div>
+
+              <div className="flex justify-center md:col-span-2 mt-4">
+                  <Button
+      onClick={logout}
+      className="w-full md:w-auto cursor-pointer rounded-xl border"
+    >
+      Logout
+    </Button>
+              </div>
+
+
             </div>
           </div>
         </div>

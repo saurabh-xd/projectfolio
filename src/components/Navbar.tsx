@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-
+import {useSession} from "next-auth/react"
 
 import { Button } from "./ui/button";
-import { Moon, Sun } from "lucide-react";
+import { CircleUserRound, Moon, Sun, Upload } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import {
@@ -15,12 +15,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 function Navbar() {
+
+    const { data: session } = useSession()
   
   const { setTheme } = useTheme();
 
   
   return (
-    <nav className="p-4 md:p-6 shadow-md">
+    <nav className="p-4 md:p-6 shadow-md border-b-2">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <Link href="/" className="text-2xl font-bold mb-4 md:mb-0">
   ProjectFolio
@@ -31,18 +33,32 @@ function Navbar() {
           
          
             <>
-                 <Link href='upload'>
-           <Button className="w-full md:w-auto cursor-pointer rounded-2xl border" >
-                Upload Project
+                 <Link href='/upload'>
+           <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold" >
+              <Upload strokeWidth={3}/>  Upload Project
               </Button>
           </Link>
               
+          {
+            session ? (
 
-          <Link href='sign-in'>
+               <Link href='/profile'>
            <Button className="w-full md:w-auto cursor-pointer rounded-2xl border" >
+               <CircleUserRound strokeWidth={3}  /> <span className="font-bold ">Profile</span>
+              </Button>
+          </Link>
+
+        
+            ) : (
+
+  <Link href='/sign-in'>
+           <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold" >
                 SIGN IN
               </Button>
           </Link>
+            )
+
+}
 
             <DropdownMenu >
             <DropdownMenuTrigger asChild>

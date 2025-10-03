@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Project = {
   _id: string;
@@ -15,6 +16,7 @@ type Project = {
 
 export default function ExplorePage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
@@ -25,8 +27,14 @@ export default function ExplorePage() {
       })
       .catch((err) => {
         console.error("Error fetching projects:", err);
+      })
+
+      .finally(()=>{
+        setLoading(false);
       });
   }, []);
+
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 py-12">
@@ -44,7 +52,20 @@ export default function ExplorePage() {
       {/* Projects Container - Centered with side margins */}
       <div className="max-w-7xl mx-auto px-8 md:px-16 lg:px-24">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-          {projects.map((project) => (
+
+           {loading
+            ? 
+              Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="flex flex-col space-y-3 bg-white p-4 rounded-2xl shadow">
+                  <Skeleton className="h-[125px] w-full rounded-xl bg-gray-300 dark:bg-gray-700" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-full bg-gray-300 dark:bg-gray-700" />
+                    <Skeleton className="h-4 w-[80%] bg-gray-300 dark:bg-gray-700" />
+                  </div>
+                </div>
+              ))
+            : 
+          projects.map((project) => (
             <div
               key={project._id}
               className="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200 hover:-translate-y-2"

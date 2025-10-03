@@ -38,7 +38,7 @@ function Signin() {
     )
     if(result?.error){
        toast("signIn failed", {
-        description: "incorrect username or password"
+        description: "incorrect email or password"
        })
     }
 
