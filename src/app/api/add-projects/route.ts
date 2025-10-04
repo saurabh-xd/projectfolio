@@ -1,9 +1,11 @@
-import mongoose from "mongoose";
 import ProjectModel from "@/models/Project";
 import { NextRequest, NextResponse } from "next/server";
 import connectdb from "@/lib/dbconnect";
 import path from "path";
 import { writeFile } from "fs/promises";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
+import UserModel from "@/models/User";
 
 
 export async function POST(request: NextRequest){
@@ -27,13 +29,20 @@ try {
         await writeFile(filePath, buffer)
         imageUrl = `/uploads/${file.name}`
         }
+
+        const session = await getServerSession(authOptions);
+
+
+     const user = await UserModel.findOne({ email: session?.user?.email });
+
     
         const newProject = await ProjectModel.create({
             name,
             description,
             image: imageUrl,
             liveLink,
-            repoLink
+            repoLink,
+            userId: user._id,
         })
     
          return NextResponse.json(

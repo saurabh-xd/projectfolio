@@ -15,7 +15,7 @@ type Project = {
 };
 
 export default function ExplorePage() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

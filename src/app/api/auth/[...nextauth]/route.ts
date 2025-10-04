@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 import connectDB from "@/lib/dbconnect";
 import User from "@/models/User";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     // 1️⃣ Credentials (email/password)
     CredentialsProvider({
@@ -84,6 +84,8 @@ const handler = NextAuth({
   },
 
 
-});
+};
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST };
