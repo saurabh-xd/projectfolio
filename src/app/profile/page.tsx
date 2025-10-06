@@ -156,7 +156,7 @@ function ProfilePage() {
              projects.map((project) => (
             <div
               key={project._id}
-              className="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200 hover:-translate-y-2"
+              className="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200 hover:-translate-y-2 mt-4"
             >
               {/* Image Section */}
               {project.image && (
