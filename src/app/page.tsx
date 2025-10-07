@@ -37,10 +37,10 @@ export default function ExplorePage() {
   
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 py-12">
+    <div className="min-h-screen bg-neutral-200 dark:bg-neutral-900 py-12">
       {/* Header Section */}
       <div className="text-center mb-16">
-        <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-neutral-300 to-neutral-900 bg-clip-text text-transparent mb-4">
+        <h1 className=" text-5xl text-center leading-tight  md:text-6xl font-extrabold bg-gradient-to-b from-neutral-50 to-neutral-500 bg-clip-text text-transparent mb-4">
           PROJECTS
         </h1>
         <p className="text-gray-600 text-lg max-w-2xl mx-auto px-4">

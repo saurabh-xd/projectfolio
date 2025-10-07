@@ -6,6 +6,7 @@ import { writeFile } from "fs/promises";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import UserModel from "@/models/User";
+import cloudinary from "@/lib/cloudinary";
 
 
 export async function POST(request: NextRequest){
@@ -21,14 +22,24 @@ try {
         const repoLink = formData.get("repoLink") as String
     
     
-        let imageUrl = ""
-        if(file){
-             const bytes = await file.arrayBuffer()
-        const buffer = Buffer.from(bytes)
-        const filePath = path.join(process.cwd(), "public/uploads", file.name)
-        await writeFile(filePath, buffer)
-        imageUrl = `/uploads/${file.name}`
-        }
+        // let imageUrl = ""
+        // if(file){
+        //      const bytes = await file.arrayBuffer()
+        // const buffer = Buffer.from(bytes)
+        // const filePath = path.join(process.cwd(), "public/uploads", file.name)
+        // await writeFile(filePath, buffer)
+        // imageUrl = `/uploads/${file.name}`
+        // }
+
+          const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const base64Image = `data:${file.type};base64,${buffer.toString("base64")}`;
+
+     const Image = await cloudinary.uploader.upload(base64Image, {
+      folder: "projectfolio",
+    });
+
+      
 
         const session = await getServerSession(authOptions);
 
@@ -39,7 +50,7 @@ try {
         const newProject = await ProjectModel.create({
             name,
             description,
-            image: imageUrl,
+            image: Image.secure_url,
             liveLink,
             repoLink,
             userId: user._id,
