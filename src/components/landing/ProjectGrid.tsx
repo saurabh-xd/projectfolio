@@ -1,6 +1,8 @@
 "use client"
 import Link from 'next/link'
 import React from 'react'
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
 
 type Project = {
   _id: string;
@@ -25,12 +27,11 @@ function ProjectGrid({ projects}: ProjectGridProps) {
   return (
     <>
      { projects.map((project) => (
-            <div
-              key={project._id}
-              className="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200 hover:-translate-y-2"
-            >
-              {/* Image Section */}
-              {project.image && (
+
+      <Card
+       key={project._id}   >
+  <CardHeader>
+    {project.image && (
                 <div className="relative h-40 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
                   <img
                     src={project.image}
@@ -40,9 +41,9 @@ function ProjectGrid({ projects}: ProjectGridProps) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
               )}
-
-              {/* Content Section */}
-              <div className="p-4">
+  </CardHeader>
+  <CardContent>
+     <div className="p-4">
                 <h2 className="font-bold text-lg mb-2 text-gray-800 line-clamp-1  transition-colors">
                   {project.name}
                 </h2>
@@ -94,10 +95,20 @@ function ProjectGrid({ projects}: ProjectGridProps) {
                   )}
                 </div>
               </div>
-
-              {/* Decorative Corner */}
-              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-bl-full transform translate-x-8 -translate-y-8 group-hover:translate-x-6 group-hover:-translate-y-6 transition-transform duration-300"></div>
-            </div>
+  </CardContent>
+  <CardFooter>
+    <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold">
+      like
+    </Button>
+    <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold">
+      comment
+    </Button>
+    <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold">
+      Hire
+    </Button>
+  </CardFooter>
+</Card>
+            
           ))
         }
           </>
