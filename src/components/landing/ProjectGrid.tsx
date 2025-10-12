@@ -96,7 +96,7 @@ function ProjectGrid({ projects}: ProjectGridProps) {
                 </div>
               </div>
   </CardContent>
-  <CardFooter>
+  <CardFooter className='gap-3'>
     <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold">
       like
     </Button>

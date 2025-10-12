@@ -58,11 +58,11 @@ function Page() {
     } catch (error) {
       toast.error("Project upload failed")
     }
-  }
+  } 
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-background">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-card">
         <h1 className="text-3xl font-bold text-center">Add Project</h1>
 
         <Form {...form}>

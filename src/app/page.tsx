@@ -38,7 +38,7 @@ export default function ExplorePage() {
   
 
   return (
-    <div className="min-h-screen bg-neutral-200 dark:bg-neutral-900 py-12">
+    <div className="min-h-screen bg-neutral-200 dark:bg-background py-12">
 
      <Header/>
 

@@ -58,13 +58,13 @@ const handleGoogleSignIn = async () => {
 // Handle GitHub Sign In  
 const handleGithubSignIn = async () => {
     await signIn('github', {
-        callbackUrl: '/'
+        callbackUrl: '/' 
     })
 }
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-gray-100'>
-        <div className='w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md'>
+    <div className='flex justify-center items-center min-h-screen bg-gray-100 dark:bg-background'>
+        <div className='w-full max-w-md p-8 space-y-6 bg-white rounded-lg dark:bg-card shadow-md'>
              <div className="text-center">
             <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
               Sign In</h1>
@@ -92,7 +92,7 @@ const handleGithubSignIn = async () => {
                 </div>
 
                 {/* OR divider */}
-                <p className="text-center text-gray-500">OR</p>
+                <p className="text-center text-gray-500 ">OR</p>
              <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
