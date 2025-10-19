@@ -1,22 +1,24 @@
-import mongoose, { Schema } from "mongoose";
+// models/Like.js
+import mongoose from 'mongoose';
 
-const LikeSchema = new Schema(
-  {
-    userId: { 
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true },
-
-    projectId: { 
-        type: Schema.Types.ObjectId,
-        ref: "Project",
-        required: true },
+const likeSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
-  { timestamps: true }
-);
+  project: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Project',
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-// prevent same user liking twice
-LikeSchema.index({ userId: 1, projectId: 1 }, { unique: true });
+// Prevent duplicate likes
+likeSchema.index({ user: 1, project: 1 }, { unique: true });
 
-const LikeModel = mongoose.models.Like || mongoose.model("Like", LikeSchema);
-export default LikeModel;
+export default mongoose.models.Like || mongoose.model('Like', likeSchema);

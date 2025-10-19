@@ -77,11 +77,38 @@ try {
 
 }
 
-export async function GET() {
+
+import Like from '@/models/Like';
+
+export async function GET(request: NextRequest) {
   try {
     await connectdb();
+    
+    const userId = (request as any).userId; // From your auth middleware
+    
     const projects = await ProjectModel.find({}).sort({ createdAt: -1 });
-    return NextResponse.json(projects, { status: 200 });
+    
+    // If user is logged in, check which projects they liked
+    if (userId) {
+      const userLikes = await Like.find({ user: userId }).select('project');
+      const likedProjectIds = userLikes.map(like => like.project.toString());
+      
+      const projectsWithLikes = projects.map(project => ({
+        ...project.toObject(),
+        isLiked: likedProjectIds.includes(project._id.toString())
+      }));
+      
+      return NextResponse.json(projectsWithLikes, { status: 200 });
+    }
+    
+    // If no user logged in, return projects without isLiked flag
+    const projectsWithoutLikes = projects.map(project => ({
+      ...project.toObject(),
+      isLiked: false
+    }));
+    
+    return NextResponse.json(projectsWithoutLikes, { status: 200 });
+    
   } catch (error) {
     console.error("Error fetching projects:", error);
     return NextResponse.json(
