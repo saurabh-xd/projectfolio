@@ -6,14 +6,7 @@ import Header from "@/components/landing/Header";
 import CardSkeleton from "@/components/landing/CardSkeleton";
 import ProjectGrid from "@/components/landing/ProjectGrid";
 
-type Project = {
-  _id: string;
-  name: string;
-  description: string;
-  image?: string;
-  repoLink?: string;
-  liveLink?: string;
-};
+import { Project } from '@/types/project';
 
 export default function ExplorePage() {
   const [projects, setProjects] = useState<Project[]>([]); 

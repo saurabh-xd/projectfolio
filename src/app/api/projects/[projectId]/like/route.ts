@@ -1,16 +1,22 @@
-// app/api/projects/[projectId]/like/route.js
 import { NextRequest, NextResponse } from 'next/server';
 
 import Like from '@/models/Like';
 import Project from '@/models/Project';
 import connectdb from '@/lib/dbconnect';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-export async function POST(request:NextRequest,  { params }: { params: { projectId: string } }) {
+export async function POST(request:NextRequest,   { params }: { params: Promise<{ projectId: string }> }) {
   try {
     await connectdb();
     
-    const { projectId } = params;
-    const userId = (request as any).userId; // Get from your auth middleware
+     const { projectId } = await params;
+      const session = await getServerSession(authOptions);
+
+   const userId = session?.user?.id; // Get from your auth middleware
+
+      console.log('ProjectId:', projectId); // ADD THIS
+    console.log('UserId:', userId);
     
     // Check if already liked
     const existingLike = await Like.findOne({

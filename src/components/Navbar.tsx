@@ -34,7 +34,7 @@ function Navbar() {
          
             <>
                  <Link href='/upload'>
-           <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold" >
+           <Button variant={"outline"} className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold" >
               <Upload strokeWidth={3}/>  Upload Project
               </Button>
           </Link>
@@ -43,7 +43,7 @@ function Navbar() {
             session ? (
 
                <Link href='/profile'>
-           <Button className="w-full md:w-auto cursor-pointer rounded-2xl border" >
+           <Button variant={"outline"} className="w-full md:w-auto cursor-pointer rounded-2xl border" >
                <CircleUserRound strokeWidth={3}  /> <span className="font-bold ">Profile</span>
               </Button>
           </Link>
@@ -52,7 +52,7 @@ function Navbar() {
             ) : (
 
   <Link href='/sign-in'>
-           <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold" >
+           <Button variant={"outline"} className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold" >
                 SIGN IN
               </Button>
           </Link>

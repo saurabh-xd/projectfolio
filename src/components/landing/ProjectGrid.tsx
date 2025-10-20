@@ -1,19 +1,15 @@
 "use client"
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react' // ADDED: useState import
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
+import { MessageCircleCode, ThumbsUp } from 'lucide-react';
+import { useSession } from 'next-auth/react'; // ADDED: For auth check (adjust based on your auth)
+import { toast } from 'sonner';
+ // ADDED: For error notifications (adjust based on your toast setup)
 
-type Project = {
-  _id: string;
-  name: string;
-  description: string;
-  image?: string;
-  repoLink?: string;
-  liveLink?: string;
-};
-
-
+// UPDATED: Added isLiked and likesCount fields
+import { Project } from '@/types/project';
 
 type ProjectGridProps = {
   projects: Project[];
@@ -22,14 +18,77 @@ type ProjectGridProps = {
 function ProjectGrid({ projects}: ProjectGridProps) {
 
 
+const [projectLikes, setProjectLikes] = useState<Record<string, { 
+  isLiked: boolean; 
+  likesCount: number; 
+ 
+}>>({});
 
+  const { data: session } = useSession(); // ADDED: Get user session (adjust based on your auth)
+   // ADDED: Toast for notifications (adjust based on your setup)
+
+ useEffect(() => {
+  const likesState = projects.reduce((acc, project) => ({
+    ...acc,
+    [project._id]: {
+      isLiked: project.isLiked,
+      likesCount: project.likesCount,
+      
+    }
+  }), {});
+  setProjectLikes(likesState);
+}, [projects]);
+
+
+  // ADDED: Like handler function
+ const handleLike = async (projectId: string) => {
+  const currentState = projectLikes[projectId];
+  
+  // Optimistic update
+  setProjectLikes(prev => ({
+    ...prev,
+    [projectId]: {
+      isLiked: !currentState.isLiked,
+      likesCount: currentState.isLiked ? currentState.likesCount - 1 : currentState.likesCount + 1,
+     
+    }
+  }));
+
+  try {
+    const response = await fetch(`/api/projects/${projectId}/like`, {
+      method: 'POST',
+    });
     
+    if (!response.ok) throw new Error('Failed');
+    
+    const data = await response.json();
+    
+    setProjectLikes(prev => ({
+      ...prev,
+      [projectId]: { ...prev[projectId],}
+    }));
+    
+  } catch (error) {
+    // Revert on error
+    setProjectLikes(prev => ({
+      ...prev,
+      [projectId]: {
+        isLiked: currentState.isLiked,
+        likesCount: currentState.likesCount,
+      
+      }
+    }));
+  }
+};
   return (
     <>
-     { projects.map((project) => (
+     { projects.map((project) => {
+       // ADDED: Get like state for this specific project
+       const likeState = projectLikes[project._id];
 
-      <Card
-       key={project._id}   >
+       return (
+      <Card 
+       key={project._id}>
   <CardHeader>
     {project.image && (
                 <div className="relative h-40 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
@@ -44,10 +103,10 @@ function ProjectGrid({ projects}: ProjectGridProps) {
   </CardHeader>
   <CardContent>
      <div className="p-4">
-                <h2 className="font-bold text-lg mb-2 text-gray-800 line-clamp-1  transition-colors">
+                <h2 className="font-bold text-lg mb-2  line-clamp-1  transition-colors">
                   {project.name}
                 </h2>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+                <p className=" text-sm mb-4 line-clamp-1 leading-relaxed">
                   {project.description}
                 </p>
 
@@ -58,7 +117,7 @@ function ProjectGrid({ projects}: ProjectGridProps) {
                       href={project.repoLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-xs font-semibold text-neutral-600 hover:text-neutral-900 hover:gap-2 transition-all"
+                      className="flex items-center gap-1 text-xs font-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-200 hover:dark:text-neutral-400 hover:gap-2 transition-all"
                     >
                       <svg
                         className="w-4 h-4"
@@ -97,19 +156,30 @@ function ProjectGrid({ projects}: ProjectGridProps) {
               </div>
   </CardContent>
   <CardFooter className='gap-3'>
-    <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold">
-      like
+   
+    <Button 
+      variant='outline' 
+      className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold gap-2"
+      onClick={() => handleLike(project._id)} // ADDED: Click handler
+     
+    >
+      <ThumbsUp 
+        fill={likeState?.isLiked ? 'blue' : 'none'} 
+       
+      />
+      <span >
+        {likeState?.likesCount || 0}
+      </span>
     </Button>
-    <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold">
-      comment
+    
+    <Button variant='outline' className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold">
+      <MessageCircleCode />
     </Button>
-    <Button className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold">
-      Hire
-    </Button>
+  
   </CardFooter>
 </Card>
-            
-          ))
+       )
+     })
         }
           </>
   )
