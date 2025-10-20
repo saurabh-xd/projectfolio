@@ -7,4 +7,5 @@ export type Project = {
   liveLink?: string;
   isLiked: boolean;
   likesCount: number;
+  commentsCount: number;
 };
