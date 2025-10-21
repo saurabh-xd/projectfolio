@@ -168,7 +168,8 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
               </div>
   </CardContent>
   <CardFooter className='gap-3'>
-   
+
+   {/* Like button */}
     <Button 
       variant='outline' 
       className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold gap-2"
@@ -183,20 +184,12 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
         {likeState?.likesCount || 0}
       </span>
     </Button>
-    
+
+    {/* comment button */}
    <Button 
   variant='outline' 
    onClick={() => router.push(`/projects/${project._id}/comments`)}
-  // onClick={() => {
-  //   const isCurrentlyOpen = showComments === project._id;
-  //     if (isCurrentlyOpen) {
-  //     setShowComments(null); // Close
-  //   } else {
-  //     setShowComments(project._id); // Open this project's comments
-  //     fetchComments(project._id);
-  //   }
-  // }
-  // }
+
 >
   <MessageCircleCode />
   <span>{project.commentsCount || 0}</span>

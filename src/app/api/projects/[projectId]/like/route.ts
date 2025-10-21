@@ -15,7 +15,7 @@ export async function POST(request:NextRequest,   { params }: { params: Promise<
 
    const userId = session?.user?.id; // Get from your auth middleware
 
-      console.log('ProjectId:', projectId); // ADD THIS
+      console.log('ProjectId:', projectId); 
     console.log('UserId:', userId);
     
     // Check if already liked

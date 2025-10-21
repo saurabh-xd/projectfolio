@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import UserModel from "@/models/User";
 import cloudinary from "@/lib/cloudinary";
+import Like from '@/models/Like';
 
 
 export async function POST(request: NextRequest){
@@ -78,13 +79,15 @@ try {
 }
 
 
-import Like from '@/models/Like';
+
 
 export async function GET(request: NextRequest) {
   try {
     await connectdb();
     
-    const userId = (request as any).userId; // From your auth middleware
+  const session = await getServerSession(authOptions);
+const user = await UserModel.findOne({ email: session?.user?.email }); 
+const userId = user?._id;
     
     const projects = await ProjectModel.find({}).sort({ createdAt: -1 });
     
