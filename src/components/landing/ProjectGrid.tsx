@@ -11,18 +11,27 @@ import { toast } from 'sonner';
 // UPDATED: Added isLiked and likesCount fields
 import { Project } from '@/types/project';
 
+import { useRouter } from 'next/navigation';
+
 type ProjectGridProps = {
   projects: Project[];
 };
 
 function ProjectGrid({ projects}: ProjectGridProps) {
 
+const router = useRouter();
 
 const [projectLikes, setProjectLikes] = useState<Record<string, { 
   isLiked: boolean; 
   likesCount: number; 
  
 }>>({});
+
+
+
+
+
+
 
   const { data: session } = useSession(); // ADDED: Get user session (adjust based on your auth)
    // ADDED: Toast for notifications (adjust based on your setup)
@@ -87,6 +96,9 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
        const likeState = projectLikes[project._id];
 
        return (
+
+        
+        
       <Card 
        key={project._id}>
   <CardHeader>
@@ -172,12 +184,29 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
       </span>
     </Button>
     
-    <Button variant='outline' className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold">
-      <MessageCircleCode />
-    </Button>
+   <Button 
+  variant='outline' 
+   onClick={() => router.push(`/projects/${project._id}/comments`)}
+  // onClick={() => {
+  //   const isCurrentlyOpen = showComments === project._id;
+  //     if (isCurrentlyOpen) {
+  //     setShowComments(null); // Close
+  //   } else {
+  //     setShowComments(project._id); // Open this project's comments
+  //     fetchComments(project._id);
+  //   }
+  // }
+  // }
+>
+  <MessageCircleCode />
+  <span>{project.commentsCount || 0}</span>
+</Button>
   
   </CardFooter>
+ 
 </Card>
+
+
        )
      })
         }
