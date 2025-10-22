@@ -78,7 +78,7 @@ export default function ProjectCommentsPage() {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Back button */}
-        <Link href="/explore" className="text-blue-600 hover:underline mb-4 inline-block">
+        <Link href="/" className="text-blue-600 hover:underline mb-4 inline-block">
           ← Back to Projects
         </Link>
 
