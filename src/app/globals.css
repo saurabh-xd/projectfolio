@@ -164,17 +164,39 @@
   --shadow-2xl: var(--shadow-2xl);
 }
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
+  * { @apply border-border outline-ring/50; }
+  
+  html { @apply font-sans; }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  
+  h1, h2, h3 { @apply font-sans font-semibold leading-tight; }
+  h4, h5, h6 { @apply font-sans font-medium leading-tight; }
+  
+  /* Body text */
+  p, span, label, div:not(.metric) { 
+    @apply font-sans leading-relaxed; 
   }
   
   
+  .metric, .stat, .number, [data-metric], 
+  .data-value, th, td { 
+    @apply font-mono font-semibold tracking-tighter; 
+  }
+  
+  
+  code, kbd, samp, pre { @apply font-mono bg-muted/20 px-1 rounded; }
 }
 
 
- 
+@layer utilities {
+  .font-metric { @apply font-mono font-semibold tracking-tighter; }
+  .font-heading { @apply font-sans font-semibold leading-tight; }
+  .font-body   { @apply font-sans leading-relaxed; }
+}
+
 
 

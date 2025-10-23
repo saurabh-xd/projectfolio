@@ -78,14 +78,14 @@ export default function ProjectCommentsPage() {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Back button */}
-        <Link href="/" className="text-blue-600 hover:underline mb-4 inline-block">
+        <Link href="/" className="text-primary hover:underline mb-4 inline-block">
           ← Back to Projects
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* LEFT SIDE - Project Details */}
           <div className="space-y-4">
-            <h1 className="text-3xl font-bold">Project Details</h1>
+            <h1 className="text-3xl  font-bold">Project Details</h1>
             
             {project ? (
               <div className="bg-card rounded-lg p-6 border">

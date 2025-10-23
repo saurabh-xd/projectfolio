@@ -1,17 +1,14 @@
 "use client"
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react' // ADDED: useState import
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import React, { useEffect, useState } from 'react' 
+import { Card,  CardContent, CardFooter, CardHeader, } from '../ui/card';
 import { Button } from '../ui/button';
 import { MessageCircleCode, ThumbsUp } from 'lucide-react';
-import { useSession } from 'next-auth/react'; // ADDED: For auth check (adjust based on your auth)
+import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
- // ADDED: For error notifications (adjust based on your toast setup)
-
-// UPDATED: Added isLiked and likesCount fields
 import { Project } from '@/types/project';
-
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 type ProjectGridProps = {
   projects: Project[];
@@ -20,21 +17,14 @@ type ProjectGridProps = {
 function ProjectGrid({ projects}: ProjectGridProps) {
 
 const router = useRouter();
+const { data: session } = useSession();
 
 const [projectLikes, setProjectLikes] = useState<Record<string, { 
   isLiked: boolean; 
   likesCount: number; 
  
 }>>({});
-
-
-
-
-
-
-
-  const { data: session } = useSession(); // ADDED: Get user session (adjust based on your auth)
-   // ADDED: Toast for notifications (adjust based on your setup)
+ 
 
  useEffect(() => {
   const likesState = projects.reduce((acc, project) => ({
@@ -49,11 +39,17 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
 }, [projects]);
 
 
-  // ADDED: Like handler function
+
+ // Like handler function
  const handleLike = async (projectId: string) => {
+    if (!session) {
+    toast.error('Please sign in to like projects');
+    return;
+  }
+
   const currentState = projectLikes[projectId];
   
-  // Optimistic update
+  
   setProjectLikes(prev => ({
     ...prev,
     [projectId]: {
@@ -64,21 +60,24 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
   }));
 
   try {
-    const response = await fetch(`/api/projects/${projectId}/like`, {
-      method: 'POST',
-    });
+    const response = await axios.post(`/api/projects/${projectId}/like`);
     
-    if (!response.ok) throw new Error('Failed');
     
-    const data = await response.json();
+    const data = await response.data;
     
     setProjectLikes(prev => ({
       ...prev,
-      [projectId]: { ...prev[projectId],}
+      [projectId]: { 
+        ...prev[projectId],
+        isLiked: data.isLiked,
+        likesCount: data.likesCount,
+      }
     }));
     
   } catch (error) {
-    // Revert on error
+
+     toast.error('Failed to update like. Please try again.');
+    
     setProjectLikes(prev => ({
       ...prev,
       [projectId]: {
@@ -92,18 +91,17 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
   return (
     <>
      { projects.map((project) => {
-       // ADDED: Get like state for this specific project
+       // Get like state for this specific project
        const likeState = projectLikes[project._id];
 
        return (
 
-        
-      
+          
         
    <Card  onClick={() => router.push(`/projects/${project._id}`)}
    key={project._id} 
    className="overflow-hidden hover:shadow-lg transition-shadow group pt-0 rounded-md cursor-pointer">
-  {/* Image - No padding/space */}
+  
   <CardHeader className='p-[2px]'>
   {project.image && (
     <div className="relative h-48 overflow-hidden rounded-md">
@@ -116,8 +114,10 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
   )}
   </CardHeader>
 
+
   {/* Content */}
   <CardContent className="p-4 pt-0 space-y-6">
+    
     {/* User Profile + Title */}
     <div className="flex items-start gap-3">
       {/* User Avatar */}
@@ -138,16 +138,13 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
       </div>
     </div>
 
-    {/* Description */}
-    {/* <p className="text-sm text-muted-foreground line-clamp-1 leading-relaxed">
-      {project.description}
-    </p> */}
 
     {/* Links */}
     <div className="flex gap-3 text-xs font-medium ml-2">
       {project.repoLink && (
         <Link
           href={project.repoLink}
+          onClick={(e) => e.stopPropagation()}
           target="_blank"
           className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
         >
@@ -160,6 +157,7 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
       {project.liveLink && (
         <Link
           href={project.liveLink}
+          onClick={(e) => e.stopPropagation()}
           target="_blank"
           className="flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors"
         >
