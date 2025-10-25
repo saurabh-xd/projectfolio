@@ -42,13 +42,13 @@ function Signup() {
                 redirect: true,
                 email: values.email,
                 password: values.password,
-                callbackUrl: "/profile",
+                callbackUrl: "/",
               });
             }
 
             toast.success("user registered successfully")
 
-            router.push("/")
+            
         } catch (error: any) {
             toast.error("error in signup")
             console.log(error.message);
@@ -57,8 +57,8 @@ function Signup() {
     }
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-gray-100 dark:bg-background'>
-        <div className='w-full max-w-md p-8 space-y-8 bg-white dark:bg-card rounded-lg shadow-md'>
+    <div className='flex justify-center items-center min-h-screen bg-background'>
+        <div className='w-full max-w-md p-8 space-y-8 bg-card rounded-lg shadow-md'>
              <div className="text-center">
             <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
               Sign up</h1>
@@ -113,7 +113,7 @@ function Signup() {
     <div className="mt-4 text-center">
               <p>
                 Already a member?{' '}
-                <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
+                <Link href="/sign-in" className="text-primary hover:text-accent">
                 Sign in
                 </Link>
               </p>

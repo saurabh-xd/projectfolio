@@ -63,8 +63,8 @@ const handleGithubSignIn = async () => {
 }
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-gray-100 dark:bg-background'>
-        <div className='w-full max-w-md p-8 space-y-6 bg-white rounded-lg dark:bg-card shadow-md'>
+    <div className='flex justify-center items-center min-h-screen bg-background'>
+        <div className='w-full max-w-md p-8 space-y-6 bg-card rounded-lg  shadow-md'>
              <div className="text-center">
             <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
               Sign In</h1>
@@ -76,23 +76,23 @@ const handleGithubSignIn = async () => {
                         type="button"
                         onClick={handleGoogleSignIn}
                         className="w-full"
-                        variant="outline"
+                        
                     >
-                        Continue with Google
+                        Continue with Google 
                     </Button>
 
                     <Button
                         type="button"
                         onClick={handleGithubSignIn}
                         className="w-full"
-                        variant="outline"
+                        
                     >
-                        Continue with GitHub
+                        Continue with GitHub 
                     </Button>
                 </div>
 
                 {/* OR divider */}
-                <p className="text-center text-gray-500 ">OR</p>
+                <p className="text-center text-muted-foreground ">OR</p>
              <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
@@ -130,7 +130,7 @@ const handleGithubSignIn = async () => {
       <div className="mt-4 text-center">
               <p>
                Don&apos;t have an account?{' '}
-                <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
+                <Link href="/sign-up" className="text-primary hover:text-accent">
                 Sign up
                 </Link>
               </p>
