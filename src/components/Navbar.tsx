@@ -22,7 +22,7 @@ function Navbar() {
 
   
   return (
-    <nav className="p-4 md:p-6 shadow-md border-b-2 dark:bg-backgound">
+    <nav className="p-4 md:p-6 shadow-md border-b-2 bg-background">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         
        
