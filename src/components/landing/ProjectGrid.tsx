@@ -124,7 +124,7 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
       {/* User Avatar */}
       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
         <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
-                   {'U' }     {/*   should image here */}
+                  {project.userId?.username?.charAt(0).toUpperCase() || 'U'}    {/*   should image here */}
                       </div>
       </div>
       
@@ -134,7 +134,7 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
           {project.name}
         </h2>
         <p className="text-xs text-muted-foreground">
-          by { 'Anonymous'}
+          by { project.userId?.username || 'Anonymous'}
         </p>
       </div>
     </div>

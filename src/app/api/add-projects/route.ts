@@ -89,7 +89,9 @@ export async function GET(request: NextRequest) {
 const user = await UserModel.findOne({ email: session?.user?.email }); 
 const userId = user?._id;
     
-    const projects = await ProjectModel.find({}).sort({ createdAt: -1 });
+    const projects = await ProjectModel.find({})
+    .populate('userId', 'username userimage')
+    .sort({ createdAt: -1 });
     
     // If user is logged in, check which projects they liked
     if (userId) {

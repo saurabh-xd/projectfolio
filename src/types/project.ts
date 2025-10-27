@@ -8,5 +8,11 @@ export type Project = {
   isLiked: boolean;
   likesCount: number;
   commentsCount: number;
-  userId: string;
+ 
+
+   userId?: {
+    username?: string;
+    userimage?: string;
+    _id?: string;
+  };
 };
