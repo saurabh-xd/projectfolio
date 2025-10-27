@@ -1,7 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { Spinner } from '@/components/ui/spinner'
 
 
 const signInSchema = z.object({
@@ -21,6 +22,7 @@ const signInSchema = z.object({
 function Signin() {
 
     const router = useRouter()
+    const [isLoading, setIsLoading] = useState(false)
 
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
@@ -31,21 +33,28 @@ function Signin() {
     })
 
     const onSubmit = async (values: z.infer<typeof signInSchema>)=>{
-         const result = await signIn('credentials',
-     { redirect: false,
-      email: values.email,
-      password: values.password }
-    )
-    if(result?.error){
-       toast("signIn failed", {
-        description: "incorrect email or password"
-       })
-    }
-
-    if(result?.ok){
-        toast.success("sign in successfully")
-        router.replace('/')
-    }
+       setIsLoading(true) 
+        try {
+           const result = await signIn('credentials',
+       { redirect: false,
+        email: values.email,
+        password: values.password }
+      )
+      if(result?.error){
+         toast("signIn failed", {
+          description: "incorrect email or password"
+         })
+      }
+  
+      if(result?.ok){
+          toast.success("sign in successfully")
+          router.replace('/')
+      }
+        } catch (error) {
+            toast.error("Something went wrong")
+        }finally{
+          setIsLoading(false)
+        }
     }
 
     // Handle Google Sign In
@@ -123,7 +132,15 @@ const handleGithubSignIn = async () => {
           )}
         /> 
        
-        <Button type="submit" className='cursor-pointer'>Sign In</Button>
+        <Button type="submit" className=' cursor-pointer' disabled={isLoading}>
+          {isLoading ? (
+             <>
+                <Spinner className="h-4 w-4" />
+                Signing in...
+              </>
+          ) : (  "Sign In" )}
+        
+          </Button>
       </form>
     </Form>
 

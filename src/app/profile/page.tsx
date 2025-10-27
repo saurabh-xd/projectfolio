@@ -9,6 +9,7 @@ import axios from "axios";
 import Link from "next/link";
 import { Project } from '@/types/project';
 import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
 
 
 
@@ -17,10 +18,17 @@ function ProfilePage() {
   const router = useRouter();
   const {data: session, status} = useSession();
   const [projects, setprojects] = useState<Project[]>([]);
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   const logout = async ()=> {
-    await signOut({ callbackUrl: "/" })
-    toast("Logout Successful")
+   setIsLoggingOut(true);
+    try {
+      await signOut({ callbackUrl: "/" })
+      toast("Logout Successful")
+    } catch (error) {
+      toast.error("Logout failed")
+    setIsLoggingOut(false)
+    }
   }
 
   
@@ -124,8 +132,17 @@ if(!session) {
                   variant={"destructive"}
       onClick={logout}
       className="w-full md:w-auto cursor-pointer rounded-xl "
+       disabled={isLoggingOut}
     >
-      Logout
+      {
+        isLoggingOut ? (
+          <>
+           <Spinner  />
+      Logging out...
+      </>
+        ) : ( "Logout" )
+      }
+      
     </Button>
               </div>
 

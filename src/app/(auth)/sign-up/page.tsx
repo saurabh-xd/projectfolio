@@ -2,12 +2,13 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormControl,  FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Spinner } from '@/components/ui/spinner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import {  useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -31,9 +32,11 @@ function Signup() {
     })
 
     const router = useRouter()
+    const [isLoading, setIsLoading] = useState(false)
 
     async  function onSubmit(values: z.infer<typeof formSchema>){
-
+     
+      setIsLoading(true);
         try {
             const res = await axios.post('/api/signup', values)
 
@@ -53,6 +56,8 @@ function Signup() {
             toast.error("error in signup")
             console.log(error.message);
             
+        }finally{
+      setIsLoading(false);
         }
     }
 
@@ -106,7 +111,19 @@ function Signup() {
             </FormItem>
           )}
         /> 
-        <Button type="submit" className='cursor-pointer'>Sign Up</Button>
+        <Button type="submit" className='cursor-pointer' disabled={isLoading}>
+          {
+            isLoading ? (
+              <>
+              <Spinner/>
+              Creating account...
+              </>
+            ) : (
+               "Sign Up"
+            )
+          }
+         
+          </Button>
       </form>
     </Form>
 

@@ -15,6 +15,7 @@ type ProjectGridProps = {
 };
 
 function ProjectGrid({ projects}: ProjectGridProps) {
+  
 
 const router = useRouter();
 const { data: session } = useSession();
