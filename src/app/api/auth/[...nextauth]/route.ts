@@ -8,7 +8,7 @@ import User from "@/models/User";
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    // 1️⃣ Credentials (email/password)
+   
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
         );
         if (!isValid) throw new Error("Invalid password");
 
-        return { id: user._id, email: user.email, username: user.username };
+        return { id: user._id, email: user.email, username: user.username , userimage: user.userimage,};
       },
     }),
 

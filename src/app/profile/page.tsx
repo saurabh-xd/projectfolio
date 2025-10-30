@@ -10,7 +10,7 @@ import Link from "next/link";
 import { Project } from '@/types/project';
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
-import { Input } from "@/components/ui/input";
+
 
 
 
@@ -22,7 +22,7 @@ function ProfilePage() {
   const [projects, setprojects] = useState<Project[]>([]);
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
-   // ADD: Image upload states
+   // Image upload states
   const [isUploadingImage, setIsUploadingImage] = useState(false);
  
   
@@ -55,7 +55,7 @@ function ProfilePage() {
     })
   },[])
 
-   // ADD: Handle image upload
+   //  Handle image upload
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -78,7 +78,7 @@ function ProfilePage() {
       });
       console.log('API Response:', response.data);
 
-console.log(response.data.userimage);
+
 
       // Update session with new image
       await update({
