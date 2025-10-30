@@ -13,8 +13,12 @@ email: {
 },
 password: {
     type: String,
-    required: false
+    required: true
 
+},
+userimage: { 
+    type: String, 
+    
 },
 
     provider: {

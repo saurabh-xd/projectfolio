@@ -123,9 +123,15 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
     <div className="flex items-start gap-3">
       {/* User Avatar */}
       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
-        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
-                  {project.userId?.username?.charAt(0).toUpperCase() || 'U'}    {/*   should image here */}
-                      </div>
+         {project.userId?.userimage ? (
+          <img src={project.userId.userimage}
+               className='w-full h-full object-cover' 
+          />
+         ): (
+          <span className="text-primary font-semibold text-sm">
+      {project.userId?.username?.charAt(0).toUpperCase() || 'U'}
+    </span>
+         )}
       </div>
       
       {/* Title & User Name */}

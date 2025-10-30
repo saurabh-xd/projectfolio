@@ -55,17 +55,28 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
             username: user.username,
             provider: account.provider,
+            userimage: user.image || null,
           });
+
+        }
+        else{
+          user.userimage = existingUser.userimage;
         }
       }
       return true;
     },
 
-    async jwt({ token, user }: any) {
+    async jwt({ token, user, trigger, session }: any) {
       if (user) {
         token.id = user.id;
         token.username = user.username;
+         token.userimage = user.userimage;
       }
+
+       if (trigger === "update" && session?.user?.userimage) {
+        token.userimage = session.user.userimage; // UPDATE token with new image
+      }
+
       return token;
     },
 
@@ -73,6 +84,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id;
         session.user.username = token.username;
+         session.user.userimage = token.userimage as string;
       }
       return session;
     },
