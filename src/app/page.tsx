@@ -18,7 +18,7 @@ export default function ExplorePage() {
       .get("/api/add-projects")
       .then((res) => {
         setProjects(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((err) => {
         console.error("Error fetching projects:", err);

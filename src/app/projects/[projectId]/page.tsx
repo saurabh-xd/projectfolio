@@ -8,6 +8,8 @@ import Link from 'next/link';
 import axios from 'axios';
 
 export default function ProjectCommentsPage() {
+
+  
   const params = useParams();
   const projectId = params.projectId as string;
   const { data: session } = useSession();
@@ -178,8 +180,21 @@ export default function ProjectCommentsPage() {
                   <div key={comment._id} className="bg-card rounded-lg p-4 border">
                     <div className="flex items-start gap-3">
                       {/* User Avatar */}
-                      <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                        {comment.user?.username?.charAt(0).toUpperCase() || 'U'}
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center  flex-shrink-0 font-bold overflow-hidden">
+                        {
+                          comment.user?.userimage ? (
+                             <img
+        src={ comment.user?.userimage }
+        alt="avatar"
+        className="w-full h-full object-cover"
+      />
+                          ) : (
+                             <span className="text-primary font-semibold text-sm">
+                                   { comment.user?.username?.charAt(0).toUpperCase() || 'U'}
+                                    </span>
+                          )
+                        }
+                       
                       </div>
                       
                       {/* Comment Content */}

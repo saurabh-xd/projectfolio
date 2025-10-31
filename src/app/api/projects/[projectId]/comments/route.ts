@@ -6,6 +6,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import Comment from '@/models/Comment';
 import ProjectModel from '@/models/Project';
 import connectdb from '@/lib/dbconnect';
+import UserModel from '@/models/User';
 
 export async function POST(
   request: NextRequest,
@@ -19,6 +20,12 @@ export async function POST(
     
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+     const user = await UserModel.findOne({ email: session.user.email });
+
+       if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
     
     const userId = session.user.id;
@@ -37,10 +44,13 @@ export async function POST(
     
     // Increment comments count
     await ProjectModel.findByIdAndUpdate(projectId, { $inc: { commentsCount: 1 } });
+
+    const populatedComment = await Comment.findById(comment._id)
+      .populate('user', 'username userimage');
     
     return NextResponse.json({ 
       message: 'Comment added',
-      comment 
+      comment : populatedComment
     });
     
   } catch (error) {
@@ -62,7 +72,7 @@ export async function GET(
     
     // Fetch comments with user info
     const comments = await Comment.find({ project: projectId })
-      .populate('user', 'username image') // Populate user details
+      .populate('user', 'username userimage') // Populate user details
       .sort({ createdAt: -1 }); // Newest first
     
     return NextResponse.json(comments);
