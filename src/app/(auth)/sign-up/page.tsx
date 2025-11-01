@@ -35,7 +35,7 @@ function Signup() {
         },
     })
 
-    const router = useRouter()
+    // const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
 
     async  function onSubmit(values: z.infer<typeof formSchema>){
@@ -56,9 +56,9 @@ function Signup() {
             toast.success("user registered successfully")
 
             
-        } catch (error: any) {
+        } catch (error) {
             toast.error("error in signup")
-            console.log(error.message);
+            
             
         }finally{
       setIsLoading(false);

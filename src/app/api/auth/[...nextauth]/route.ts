@@ -44,8 +44,8 @@ export const authOptions: NextAuthOptions = {
   ],
 
    callbacks: {
-    async signIn({ user, account }: any) {
-      if (account.provider !== "credentials") {
+    async signIn({ user, account }) {
+      if (account?.provider !== "credentials") {
         await connectDB();
 
         const existingUser = await User.findOne({ email: user.email });
@@ -53,8 +53,8 @@ export const authOptions: NextAuthOptions = {
         if (!existingUser) {
           await User.create({
             email: user.email,
-            username: user.username,
-            provider: account.provider,
+            username: user.name || user.email?.split("@")[0],
+            provider: account?.provider,
             userimage: user.image || null,
           });
 
@@ -66,7 +66,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
 
-    async jwt({ token, user, trigger, session }: any) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.username = user.username;
@@ -80,7 +80,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
 
-    async session({ session, token }: any) {
+    async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id;
         session.user.username = token.username;

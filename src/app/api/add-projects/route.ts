@@ -1,8 +1,6 @@
 import ProjectModel from "@/models/Project";
 import { NextRequest, NextResponse } from "next/server";
 import connectdb from "@/lib/dbconnect";
-import path from "path";
-import { writeFile } from "fs/promises";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import UserModel from "@/models/User";
@@ -17,10 +15,10 @@ try {
     
         const formData = await request.formData()
         const file = formData.get("image") as File
-        const name = formData.get("name") as String
-        const description = formData.get("description") as String
-        const liveLink = formData.get("liveLink") as String
-        const repoLink = formData.get("repoLink") as String
+        const name = formData.get("name") as string
+        const description = formData.get("description") as string
+        const liveLink = formData.get("liveLink") as string
+        const repoLink = formData.get("repoLink") as string
     
     
         // let imageUrl = ""

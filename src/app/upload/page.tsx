@@ -69,7 +69,7 @@ function Page() {
   } 
 
    //  Handle image selection and preview
-  const handleImageChange = (file: File | undefined, onChange: any) => {
+  const handleImageChange = (file: File | undefined, onChange: (value: File | undefined) => void) => {
     if (file) {
       onChange(file)
       const reader = new FileReader()
@@ -81,7 +81,7 @@ function Page() {
   }
 
   // ADD: Remove image
-  const handleRemoveImage = (onChange: any) => {
+  const handleRemoveImage = (onChange: (value: File | undefined) => void) => {
     onChange(undefined)
     setImagePreview(null)
   }

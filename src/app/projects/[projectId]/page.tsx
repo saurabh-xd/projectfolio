@@ -7,6 +7,30 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import axios from 'axios';
 
+interface User {
+  _id: string;
+  username: string;
+  userimage?: string | null;
+}
+
+interface Comment {
+  _id: string;
+  text: string;
+  user: User;
+  createdAt: string;
+}
+
+interface Project {
+  _id: string;
+  name: string;
+  description: string;
+  image?: string;
+  repoLink?: string;
+  liveLink?: string;
+  likesCount?: number;
+  commentsCount?: number;
+}
+
 export default function ProjectCommentsPage() {
 
   
@@ -14,8 +38,8 @@ export default function ProjectCommentsPage() {
   const projectId = params.projectId as string;
   const { data: session } = useSession();
   
-  const [project, setProject] = useState<any>(null);
-  const [comments, setComments] = useState<any[]>([]);
+  const [project, setProject] = useState<Project | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
   const [isCommenting, setIsCommenting] = useState(false);
   const [loading, setLoading] = useState(true);
