@@ -2,7 +2,7 @@ import ProjectModel from "@/models/Project";
 import { NextRequest, NextResponse } from "next/server";
 import connectdb from "@/lib/dbconnect";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from '@/lib/authOptions';
 import UserModel from "@/models/User";
 import cloudinary from "@/lib/cloudinary";
 import Like from '@/models/Like';

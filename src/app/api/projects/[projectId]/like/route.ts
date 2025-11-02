@@ -4,7 +4,8 @@ import Like from '@/models/Like';
 import Project from '@/models/Project';
 import connectdb from '@/lib/dbconnect';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/authOptions';
+
 
 export async function POST(request:NextRequest,   { params }: { params: Promise<{ projectId: string }> }) {
   try {

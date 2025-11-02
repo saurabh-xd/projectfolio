@@ -1,7 +1,7 @@
 import connectdb from "@/lib/dbconnect";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from '@/lib/authOptions';
 import cloudinary from "@/lib/cloudinary";
 import UserModel from "@/models/User";
 
