@@ -5,7 +5,9 @@ import connectdb from '@/lib/dbconnect';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 
-export async function GET(request:NextRequest,  context: { params: { projectId: string } }) {
+export async function GET(
+  request: NextRequest,
+ { params }: { params: Promise<{ projectId: string }> }) {
   try {
     await connectdb();
 
@@ -14,7 +16,7 @@ export async function GET(request:NextRequest,  context: { params: { projectId: 
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    const { projectId } = context.params;
+    const { projectId } = await params;
    const userId = session.user.id;
     
     const like = await Like.findOne({
