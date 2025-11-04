@@ -16,24 +16,25 @@ export async function POST(request:NextRequest,   { params }: { params: Promise<
 
    const userId = session?.user?.id; // Get from your auth middleware
 
-      console.log('ProjectId:', projectId); 
-    console.log('UserId:', userId);
     
     // Check if already liked
     const existingLike = await Like.findOne({
       user: userId,
       project: projectId
     });
+
+    let isLiked = false;
     
     if (existingLike) {
       // Unlike
       await Like.deleteOne({ _id: existingLike._id });
       await Project.findByIdAndUpdate(projectId, { $inc: { likesCount: -1 } });
       
-      return NextResponse.json({ 
-        message: 'Unliked', 
-        isLiked: false 
-      });
+      // return NextResponse.json({ 
+      //   message: 'Unliked', 
+      //   isLiked: false 
+      // });
+      isLiked =false
     } else {
       // Like
       await Like.create({
@@ -42,12 +43,20 @@ export async function POST(request:NextRequest,   { params }: { params: Promise<
       });
       await Project.findByIdAndUpdate(projectId, { $inc: { likesCount: 1 } });
       
-      return NextResponse.json({ 
-        message: 'Liked', 
-        isLiked: true 
-      });
+      // return NextResponse.json({ 
+      //   message: 'Liked', 
+      //   isLiked: true 
+      // });
+       isLiked =true
     }
     
+     const updatedProject = await Project.findById(projectId).select("likesCount");
+        return NextResponse.json({
+      message: isLiked ? "Liked" : "Unliked",
+      isLiked,
+      likesCount: updatedProject?.likesCount || 0, // ✅ send updated count
+    });
+
   } catch (error) {
     return NextResponse.json(
       { error: 'Something went wrong' },
