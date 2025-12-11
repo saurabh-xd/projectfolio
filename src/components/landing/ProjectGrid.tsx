@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { Project } from '@/types/project';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import Image from 'next/image';
 
 type ProjectGridProps = {
   projects: Project[];
@@ -97,7 +98,7 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
 
        return (
 
-          
+         
         
    <Card  onClick={() => router.push(`/projects/${project._id}`)}
    key={project._id} 
@@ -106,9 +107,10 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
   <CardHeader className='p-[2px]'>
   {project.image && (
     <div className="relative h-48 overflow-hidden rounded-md">
-      <img
+      <Image
         src={project.image}
         alt={project.name}
+        fill
         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
       />
     </div>
@@ -124,7 +126,9 @@ const [projectLikes, setProjectLikes] = useState<Record<string, {
       {/* User Avatar */}
       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
          {project.userId?.userimage ? (
-          <img src={project.userId.userimage}
+          <Image src={project.userId.userimage} alt=''
+          width={100}
+          height={100}
                className='w-full h-full object-cover' 
           />
          ): (

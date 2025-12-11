@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Upload, X } from "lucide-react"
+import Image from "next/image"
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -105,9 +106,10 @@ function Page() {
                     
                       {imagePreview ? (
                         <div className="relative group">
-                          <img
+                          <Image
                             src={imagePreview}
                             alt="Preview"
+                            fill
                             className="w-full min-h-64 object-cover rounded-lg border-2 border-border"
                           />
                           {/* Remove Button */}

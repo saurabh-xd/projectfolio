@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import axios from 'axios';
+import Image from 'next/image';
 
 interface User {
   _id: string;
@@ -116,9 +117,11 @@ export default function ProjectCommentsPage() {
               <div className="bg-card rounded-lg p-6 border">
                 {/* Project Image */}
                 {project.image && (
-                  <img
+                  <Image
                     src={project.image}
                     alt={project.name}
+                    height={100}
+                    width={100}
                     className="w-full h-64 object-cover rounded-lg mb-4"
                   />
                 )}
@@ -207,9 +210,10 @@ export default function ProjectCommentsPage() {
                       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center  flex-shrink-0 font-bold overflow-hidden">
                         {
                           comment.user?.userimage ? (
-                             <img
+                             <Image
         src={ comment.user?.userimage }
         alt="avatar"
+        fill
         className="w-full h-full object-cover"
       />
                           ) : (

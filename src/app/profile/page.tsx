@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Project } from '@/types/project';
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
+import Image from "next/image";
 
 
 
@@ -153,10 +154,12 @@ if(!session) {
   {/* Avatar Circle */}
   <div className="w-32 h-32 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-xl border-4 border-card overflow-hidden">
     { session.user?.userimage ? (
-      <img
+      <Image
         src={ session.user?.userimage }
         alt="Profile"
-        className="w-full h-full object-cover"
+        width={100}
+        height={100}
+        className="w-full  h-full object-cover"
       />
     ) : (
       <span className="text-5xl font-bold text-primary-foreground">
@@ -287,9 +290,10 @@ if(!session) {
                   {/* Image Section */}
                   {project.image && (
                     <div className="relative h-48 overflow-hidden bg-muted">
-                      <img
+                      <Image
                         src={project.image}
                         alt={project.name}
+                        fill
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
