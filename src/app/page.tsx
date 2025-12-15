@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "@/components/landing/Header";
-import CardSkeleton from "@/components/landing/CardSkeleton";
+import CardSkeleton from "@/components/common/CardSkeleton";
 import ProjectGrid from "@/components/landing/ProjectGrid";
 
 import { Project } from '@/types/project';

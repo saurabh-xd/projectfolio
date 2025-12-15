@@ -213,7 +213,8 @@ export default function ProjectCommentsPage() {
                              <Image
         src={ comment.user?.userimage }
         alt="avatar"
-        fill
+        width={100}
+        height={100}
         className="w-full h-full object-cover"
       />
                           ) : (
