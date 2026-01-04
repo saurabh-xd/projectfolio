@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ProjectFolio
+
+A modern developer portfolio and project showcase platform built with Next.js. ProjectFolio enables developers to create professional profiles, showcase their work, and engage with the developer community.
+
+## Features
+
+- Developer profile management
+- Project showcase with grid layout
+- Interactive features (likes, comments)
+- Secure authentication system
+- Fully responsive design
+- Optimized performance
+
+## Tech Stack
+
+**Frontend:** Next.js, React, Tailwind CSS, shadcn/ui, Lucide Icons
+
+**Backend:** Next.js API Routes, Node.js, MongoDB, Mongoose
+
+**Authentication:** NextAuth.js with JWT
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ installed
+- MongoDB database
+
+### Installation
+
+1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/projectfolio.git
+cd projectfolio
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Configure environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env` file in the root directory:
+```env
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+```
 
-## Learn More
+4. Run the development server
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+projectfolio/
+├── app/              # Next.js app directory
+│   ├── api/          # API routes
+│   ├── (auth)/       # Authentication pages
+│   └── (dashboard)/  # Dashboard pages
+├── components/       # React components
+│   └── ui/           # shadcn/ui components
+├── lib/              # Utility functions
+├── models/           # Database models
+├── types/            # TypeScript types
+└── public/           # Static assets
+```
 
-## Deploy on Vercel
+## Roadmap
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Search and filter functionality
+- Project bookmarking
+- Analytics dashboard
+- Public user profiles
+- Admin panel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Author
+
+**Saurabh**  
+BCA Student | Full-Stack Developer
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+⭐ Found this helpful? Star the repository!
