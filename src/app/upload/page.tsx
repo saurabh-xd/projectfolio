@@ -109,7 +109,8 @@ function Page() {
                           <Image
                             src={imagePreview}
                             alt="Preview"
-                            fill
+                            width={100}
+                            height={100}
                             className="w-full min-h-64 object-cover rounded-lg border-2 border-border"
                           />
                           {/* Remove Button */}

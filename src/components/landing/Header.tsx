@@ -12,13 +12,13 @@ function Header({searchQuery, setSearchQuery}: HeaderProps) {
   return (
     <div className="text-center mb-12 space-y-6">
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         <h1 className="text-4xl md:text-6xl font-bold">
           Explore {" "}
           <span className="text-primary">Projects</span>
         </h1>
         
-        <p className="text-muted-foreground max-w-xl mx-auto px-4">
+        <p className="text-muted-foreground max-w-xl mx-auto px-2">
           Showcase your projects and discover inspiring ones
         </p>
       </div>
@@ -32,7 +32,7 @@ function Header({searchQuery, setSearchQuery}: HeaderProps) {
             placeholder="Search projects by name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-12 pr-12 h-12 rounded-full border-2 focus:border-primary text-base"
+            className="pl-12 pr-12 h-12 rounded-full "
           />
           {searchQuery && (
             <Button

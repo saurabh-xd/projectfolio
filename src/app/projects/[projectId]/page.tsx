@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import axios from 'axios';
 import Image from 'next/image';
+import { MoveLeft } from 'lucide-react';
 
 interface User {
   _id: string;
@@ -104,8 +105,8 @@ export default function ProjectCommentsPage() {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Back button */}
-        <Link href="/" className="text-primary hover:underline mb-4 inline-block">
-          ← Back to Projects
+        <Link href="/" className="text-primary hover:underline mb-4 flex gap-2 items-center">
+        <MoveLeft /> Back to Projects
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -179,7 +180,7 @@ export default function ProjectCommentsPage() {
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Write a comment..."
-                  className="w-full border rounded p-3 mb-2 min-h-[100px] resize-none"
+                  className="w-full border rounded p-3 mb-2 min-h-25 resize-none"
                 />
                 <Button 
                   onClick={handleAddComment}
@@ -207,7 +208,7 @@ export default function ProjectCommentsPage() {
                   <div key={comment._id} className="bg-card rounded-lg p-4 border">
                     <div className="flex items-start gap-3">
                       {/* User Avatar */}
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center  flex-shrink-0 font-bold overflow-hidden">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center  shrink-0 font-bold overflow-hidden">
                         {
                           comment.user?.userimage ? (
                              <Image

@@ -37,7 +37,7 @@ export default function ExplorePage() {
   
 
   return (
-    <div className="min-h-screen bg-background dark:bg-background py-12">
+    <div className="min-h-screen bg-background  py-12">
 
      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 

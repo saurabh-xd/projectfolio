@@ -56,8 +56,10 @@ function Signup() {
             toast.success("user registered successfully")
 
             
-        } catch (error) {
-            toast.error("error in signup")
+        } catch (error:any) {
+            toast.error(error.message)
+           
+           
             
             
         }finally{
