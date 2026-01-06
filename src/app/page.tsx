@@ -18,7 +18,7 @@ export default function ExplorePage() {
       .get("/api/add-projects")
       .then((res) => {
         setProjects(res.data);
-        // console.log(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.error("Error fetching projects:", err);
@@ -37,18 +37,12 @@ export default function ExplorePage() {
   
 
   return (
-    <div className="min-h-screen bg-background  py-12">
+    <div className="min-h-screen bg-background max-w-7xl mx-auto py-12">
 
      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
     
-      <div className="max-w-7xl mx-auto px-8 md:px-16 lg:px-24">
-         {/* Show filtered count */}
-        {/* {searchQuery && (
-          <p className="text-sm text-muted-foreground mb-4">
-            Found {filteredProjects.length} project{filteredProjects.length !== 1 ? 's' : ''}
-          </p>
-        )} */}
+      <div className=" px-8 md:px-16 lg:px-24">
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 ">
 

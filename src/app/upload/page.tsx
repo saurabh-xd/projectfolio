@@ -20,6 +20,29 @@ import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Upload, X } from "lucide-react"
 import Image from "next/image"
+import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectGroup,
+  MultiSelectItem,
+  MultiSelectTrigger,
+  MultiSelectValue,
+} from "@/components/ui/multi-select"
+
+const tags = [
+  "Frontend",
+  "Backend",
+  "Full-Stack",
+  "Mobile App",
+  "AI/ML",
+  "CLI",
+  "Open Source",
+  "Side Project",
+  "Game",
+  "Desktop App",
+  
+]
+
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -27,6 +50,7 @@ const formSchema = z.object({
   image: z.any().optional(), // file input
   liveLink: z.string().url("Must be a valid URL"),
   repoLink: z.string().url("Must be a valid URL"),
+  tags: z.array(z.string()).min(2, "Select at least 2 tag"),
 })
 
 function Page() {
@@ -34,9 +58,10 @@ function Page() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      description: "",
+      tags: [],
       liveLink: "",
       repoLink: "",
+      description: "",
     },
   })
 
@@ -50,6 +75,7 @@ function Page() {
 
       const formData = new FormData()
       formData.append("name", values.name)
+      formData.append("tags", JSON.stringify(values.tags))
       formData.append("description", values.description)
       formData.append("liveLink", values.liveLink)
       formData.append("repoLink", values.repoLink)
@@ -152,7 +178,14 @@ function Page() {
               )}
             />
 
-            {/* Name */}
+          
+
+          
+
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
+  {/* Name */}
             <FormField
               control={form.control}
               name="name"
@@ -167,22 +200,35 @@ function Page() {
               )}
             />
 
-            {/* Description */}
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Description" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+ 
+        <FormField
+          control={form.control}
+          name="tags"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Project Tags</FormLabel>
+              <MultiSelect onValuesChange={field.onChange} values={field.value}>
+                <FormControl>
+                  <MultiSelectTrigger className="w-full cursor-pointer">
+                    <MultiSelectValue placeholder="Select tags..." />
+                  </MultiSelectTrigger>
+                </FormControl>
+                <MultiSelectContent>
+                  <MultiSelectGroup>
+                    {tags.map((tag) => (
+          <MultiSelectItem key={tag} value={tag}>
+            {tag}
+          </MultiSelectItem>
+  ))}
+                  </MultiSelectGroup>
+                </MultiSelectContent>
+              </MultiSelect>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      
+  
 
             {/* Live Link */}
             <FormField
@@ -215,6 +261,21 @@ function Page() {
             />
 
             </div>
+
+  {/* Description */}
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Description" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <Button type="submit" 
             disabled={loading} 
