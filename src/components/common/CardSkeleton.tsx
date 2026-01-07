@@ -7,7 +7,7 @@ function CardSkeleton() {
     
     {
         
-    Array.from({ length: 6 }).map((_, i) => (
+    Array.from({ length: 9 }).map((_, i) => (
                 <div key={i} className="flex flex-col space-y-3 bg-card p-4 rounded-2xl shadow">
                   <Skeleton className="h-[125px] w-full rounded-xl " />
                   <div className="space-y-2">

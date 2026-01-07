@@ -39,7 +39,7 @@ function Header({searchQuery, setSearchQuery}: HeaderProps) {
               variant="ghost"
               size="icon"
               onClick={() => setSearchQuery('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full"
+              className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full cursor-pointer"
             >
               <X className="h-4 w-4" />
             </Button>
