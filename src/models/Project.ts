@@ -22,6 +22,11 @@ const ProjectSchema = new Schema(
       type: String,
       required: true,
     },
+    tags: {
+      type: [String],
+      required: true,
+       default: []
+    },
 
     userId: {
       type: Schema.Types.ObjectId,

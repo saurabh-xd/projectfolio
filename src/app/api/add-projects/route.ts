@@ -6,6 +6,7 @@ import { authOptions } from '@/lib/authOptions';
 import UserModel from "@/models/User";
 import cloudinary from "@/lib/cloudinary";
 import Like from '@/models/Like';
+import Bookmark from "@/models/Bookmark";
 
 
 export async function POST(request: NextRequest){
@@ -20,15 +21,11 @@ try {
         const liveLink = formData.get("liveLink") as string
         const repoLink = formData.get("repoLink") as string
     
+            // ✅ Parse the tags JSON string back to array
+
+         const tagsString = formData.get("tags") as string
+    const tags = JSON.parse(tagsString) 
     
-        // let imageUrl = ""
-        // if(file){
-        //      const bytes = await file.arrayBuffer()
-        // const buffer = Buffer.from(bytes)
-        // const filePath = path.join(process.cwd(), "public/uploads", file.name)
-        // await writeFile(filePath, buffer)
-        // imageUrl = `/uploads/${file.name}`
-        // }
 
           const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
@@ -44,8 +41,6 @@ try {
 
 
      const user = await UserModel.findOne({ email: session?.user?.email });
-
-    
         const newProject = await ProjectModel.create({
             name,
             description,
@@ -53,7 +48,10 @@ try {
             liveLink,
             repoLink,
             userId: user._id,
+            tags
         })
+
+          console.log("Saved project:", newProject)
     
          return NextResponse.json(
         { success: true, message: "Project saved!", project: newProject },
@@ -95,22 +93,27 @@ const userId = user?._id;
     if (userId) {
       const userLikes = await Like.find({ user: userId }).select('project');
       const likedProjectIds = userLikes.map(like => like.project.toString());
+
+      const userBookmarks = await Bookmark.find({user: userId}).select('project');
+      const bookmarkedProjectIds = userBookmarks.map(bookmark => bookmark.project.toString());
       
-      const projectsWithLikes = projects.map(project => ({
+      const projectsWithData = projects.map(project => ({
         ...project.toObject(),
-        isLiked: likedProjectIds.includes(project._id.toString())
+        isLiked: likedProjectIds.includes(project._id.toString()),
+        isBookmarked: bookmarkedProjectIds.includes(project._id.toString()) // ✅ ADD THIS
       }));
       
-      return NextResponse.json(projectsWithLikes, { status: 200 });
+      return NextResponse.json(projectsWithData, { status: 200 });
     }
     
     // If no user logged in, return projects without isLiked flag
-    const projectsWithoutLikes = projects.map(project => ({
+    const projectsWithoutData  = projects.map(project => ({
       ...project.toObject(),
-      isLiked: false
+      isLiked: false,
+      isBookmarked: false
     }));
     
-    return NextResponse.json(projectsWithoutLikes, { status: 200 });
+    return NextResponse.json(projectsWithoutData, { status: 200 });
     
   } catch (error) {
     console.error("Error fetching projects:", error);
