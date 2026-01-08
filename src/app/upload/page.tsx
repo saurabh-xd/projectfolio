@@ -34,6 +34,9 @@ const tags = [
   "Backend",
   "Full-Stack",
   "Mobile App",
+  "Landing Page",
+  "Portfolio",
+  "UI/UX",
   "AI/ML",
   "CLI",
   "Open Source",
@@ -47,7 +50,7 @@ const tags = [
 const formSchema = z.object({
   name: z.string().min(2).max(50),
   description: z.string().min(2).max(2000),
-  image: z.any().optional(), // file input
+  image: z.instanceof(File, { message: "Image is required" }),
   liveLink: z.string().url("Must be a valid URL"),
   repoLink: z.string().url("Must be a valid URL"),
   tags: z.array(z.string()).min(2, "Select at least 2 tag"),

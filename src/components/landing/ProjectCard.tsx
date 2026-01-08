@@ -14,10 +14,14 @@ type ProjectCardProps = {
     isLiked: boolean;
     likesCount: number;
   };
+   bookmarkState?: {
+    isBookmarked: boolean;
+  };
   onLike: (projectId: string) => void;
+  onBookmark: (projectId: string) => void;
 };
 
-function ProjectCard({ project, likeState, onLike }: ProjectCardProps) {
+function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark  }: ProjectCardProps) {
   const router = useRouter();
 
   return (
@@ -166,8 +170,17 @@ function ProjectCard({ project, likeState, onLike }: ProjectCardProps) {
           </span>
         </button>
 
-        <button className="flex gap-1.5  hover:text-primary hover:border-primary/50 transition-colors cursor-pointer">
-          <Bookmark className="size-4" />
+
+        <button 
+        className="flex gap-1.5  hover:text-primary hover:border-primary/50 transition-colors cursor-pointer"
+          onClick={(e)=>{
+            e.stopPropagation();
+            onBookmark(project._id);
+          }}
+          >
+          <Bookmark className={`size-4 transition-all ${
+            bookmarkState?.isBookmarked ? 'fill-primary text-primary' : ''
+          }`} />
         </button>
       </CardFooter>
     </Card>

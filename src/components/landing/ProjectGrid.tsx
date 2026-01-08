@@ -26,6 +26,15 @@ function ProjectGrid({ projects, loading }: ProjectGridProps) {
     >
   >({});
 
+  const [projectBookmarks, setProjectBookmarks] = useState<
+    Record<
+      string,
+      {
+        isBookmarked: boolean;
+      }
+    >
+  >({});
+
   useEffect(() => {
     const likesState = projects.reduce(
       (acc, project) => ({
@@ -38,6 +47,15 @@ function ProjectGrid({ projects, loading }: ProjectGridProps) {
       {}
     );
     setProjectLikes(likesState);
+
+const bookmarksState = projects.reduce((acc, project) => ({
+      ...acc,
+      [project._id]: {
+        isBookmarked: project.isBookmarked,
+      }
+    }), {});
+    setProjectBookmarks(bookmarksState);
+
   }, [projects]);
 
   // Like handler function
@@ -84,28 +102,72 @@ function ProjectGrid({ projects, loading }: ProjectGridProps) {
       }));
     }
   };
-  return (
-    
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 ">
-        {loading ? (
-          <CardSkeleton />
-        ) : (
-          projects.map((project) => {
-            //  like state for this specific project
-            const likeState = projectLikes[project._id];
 
-            return (
-              <ProjectCard
-               key={project._id}
-                project={project}
-                likeState={likeState}
-                onLike={handleLike}
-              />
-            );
-          })
-        )}
-      </div>
-  
+const handleBookmark = async (projectId: string) => {
+    if (!session) {
+      toast.error('Please sign in to bookmark projects');
+      return;
+    }
+
+    const currentState = projectBookmarks[projectId];
+
+    // Optimistic update
+    setProjectBookmarks(prev => ({
+      ...prev,
+      [projectId]: {
+        isBookmarked: !currentState.isBookmarked,
+      }
+    }));
+
+    try {
+      const response = await axios.post(`/api/projects/${projectId}/bookmark`);
+      const data = response.data;
+
+      setProjectBookmarks(prev => ({
+        ...prev,
+        [projectId]: {
+          isBookmarked: data.isBookmarked,
+        }
+      }));
+
+      toast.success(data.isBookmarked ? 'Project bookmarked' : 'Bookmark removed');
+
+    } catch (error) {
+      toast.error('Failed to update bookmark');
+      
+      // Revert on error
+      setProjectBookmarks(prev => ({
+        ...prev,
+        [projectId]: {
+          isBookmarked: currentState.isBookmarked,
+        }
+      }));
+    }
+  };
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 ">
+      {loading ? (
+        <CardSkeleton />
+      ) : (
+        projects.map((project) => {
+          //  like state for this specific project
+          const likeState = projectLikes[project._id];
+          const bookmarkState = projectBookmarks[project._id];
+
+          return (
+            <ProjectCard
+              key={project._id}
+              project={project}
+              likeState={likeState}
+              onLike={handleLike}
+               bookmarkState={bookmarkState}
+               onBookmark={handleBookmark}
+            />
+          );
+        })
+      )}
+    </div>
   );
 }
 
