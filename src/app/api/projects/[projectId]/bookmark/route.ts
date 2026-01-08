@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import Project from '@/models/Project';
 
+// bookmarking project
 export async function POST(request: NextRequest, { params }: { params: Promise<{ projectId: string }> }){
 
 

@@ -2,6 +2,7 @@ import connectdb from "@/lib/dbconnect";
 import ProjectModel from "@/models/Project";
 import { NextRequest, NextResponse } from "next/server";
 
+//getting single project details
 export async function GET(request: NextRequest, { params }: { params: Promise<{ projectId: string }> }){
     try {
         await connectdb();
