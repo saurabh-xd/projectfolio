@@ -6,34 +6,75 @@ import { Button } from '../ui/button'
 import { FolderKanban } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Project } from '@/types/project'
+import { Badge } from '../ui/badge'
 
-type ProjectsCardProps = {
-  projects: Project[]
+type EmptyState = {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  buttonText: string;
+  buttonHref: string;
 }
 
-export default function ProjectsCard({projects}: ProjectsCardProps ) {
+type ProjectsCardProps = {
+  projects: Project[];
+  loading?: boolean;
+  emptyState?: EmptyState
+}
+
+export default function ProjectsCard({projects, loading=false, emptyState}: ProjectsCardProps ) {
     
  const router = useRouter();
 
+ const defaultEmptyState: EmptyState = {
+    icon: <FolderKanban className="w-16 h-16 mx-auto mb-4 text-muted-foreground/30" />,
+    title: "No projects yet",
+    description: "Post your first project to get started",
+    buttonText: "Upload Project",
+    buttonHref: "/upload"
+  };
+
+   const emptyStateConfig = emptyState || defaultEmptyState;
+
+    if (loading) {
+    return (
+      <div className="bg-card rounded-2xl shadow-lg border border-border p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="animate-pulse">
+              <div className="bg-muted h-48 rounded-xl mb-4"></div>
+              <div className="bg-muted h-4 w-3/4 rounded mb-2"></div>
+              <div className="bg-muted h-3 w-1/2 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  
   return (
       <div className="bg-card rounded-2xl shadow-lg border border-border p-8">
-          <div className="flex  items-center space-x-3 mb-6">
+          {/* <div className="flex  items-center space-x-3 mb-6">
             <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
               <FolderKanban className="w-5 h-5 text-primary" />
             </div>
             <h2 className="text-2xl font-bold text-foreground">Your Projects</h2>
-          </div>
+          </div> */}
           
           {projects.length === 0 ? (
-            <div className="text-center py-12">
-              <FolderKanban className="w-16 h-16 mx-auto mb-4 text-muted-foreground/30" />
-              <p className="text-lg font-medium text-foreground mb-2">No projects yet</p>
-              <p className="text-sm text-muted-foreground mb-4">Create your first project to get started</p>
-              <Link href="/upload">
-                <Button>Upload Project</Button>
-              </Link>
-            </div>
-          ) : (
+        <div className="text-center py-12">
+          {emptyStateConfig.icon}
+          <p className="text-lg font-medium text-foreground mb-2">
+            {emptyStateConfig.title}
+          </p>
+          <p className="text-sm text-muted-foreground mb-4">
+            {emptyStateConfig.description}
+          </p>
+          <Link href={emptyStateConfig.buttonHref}>
+            <Button>{emptyStateConfig.buttonText}</Button>
+          </Link>
+        </div>
+      ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project) => (
                 <div
@@ -50,7 +91,7 @@ export default function ProjectsCard({projects}: ProjectsCardProps ) {
                         fill
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                   )}
 
@@ -59,9 +100,26 @@ export default function ProjectsCard({projects}: ProjectsCardProps ) {
                     <h3 className="font-bold text-lg text-foreground line-clamp-1">
                       {project.name}
                     </h3>
-                    <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
-                      {project.description}
-                    </p>
+                    
+                     {/* Tags */}
+                {project.tags && project.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.tags.slice(0, 3).map((tag, index) => (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="text-[10px] px-2 py-0.5"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+
+                 <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
+                  {project.description}
+                </p>
 
                     {/* Stats */}
                     <div className="flex gap-4 text-xs text-muted-foreground pt-2">
