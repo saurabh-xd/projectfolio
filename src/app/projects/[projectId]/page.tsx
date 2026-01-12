@@ -7,7 +7,20 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import axios from 'axios';
 import Image from 'next/image';
-import { MoveLeft } from 'lucide-react';
+import { MoveLeft, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface User {
   _id: string;
@@ -44,6 +57,7 @@ export default function ProjectCommentsPage() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
   const [isCommenting, setIsCommenting] = useState(false);
+  const [deleteComment, setDeleteComment] = useState<string | null >(null)
   const [loading, setLoading] = useState(true);
 
   // Fetch project details
@@ -100,6 +114,48 @@ export default function ProjectCommentsPage() {
       setIsCommenting(false);
     }
   };
+
+  // delete comment
+
+  const handleDeleteComment = async (commentId: string) => {
+    setDeleteComment(commentId)
+
+    try {
+      
+      await axios.delete(`/api/projects/${projectId}/comments/${commentId}`);
+
+      setComments(comments.filter(comment => comment._id !== commentId));
+
+      if(project){
+        setProject({
+          ...project,
+          commentsCount: Math.max(0, (project.commentsCount || 0) - 1)
+        })
+      }
+
+      toast.success("Comment deleted successfully");
+
+    } catch (error: any) {
+      console.error('Error deleting comment:', error);
+      
+      if (error.response?.status === 403) {
+        toast.error('You can only delete your own comments');
+      } else {
+        toast.error('Failed to delete comment');
+      }
+    } finally {
+      setDeleteComment(null);
+    }
+  };
+
+const canDeleteComment = (comment: Comment) => {
+  if(!session?.user) return false;
+
+  return comment.user._id === session.user.id ||
+  comment.user.username === session.user.username;
+}
+
+  
 
   return (
     <div className="min-h-screen bg-background">
@@ -229,10 +285,48 @@ export default function ProjectCommentsPage() {
                       
                       {/* Comment Content */}
                       <div className="flex-1">
-                        <div className="font-semibold">{comment.user?.username || 'Anonymous'}</div>
+                        <div className='flex items-center justify-between'>
+                          <div>
+ <div className="font-semibold">{comment.user?.username || 'Anonymous'}</div>
                         <div className="text-sm text-muted-foreground">
                           {new Date(comment.createdAt).toLocaleDateString()}
                         </div>
+                          </div>
+
+                      {canDeleteComment(comment) && (
+                          <AlertDialog>
+                              <AlertDialogTrigger asChild >
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10 cursor-pointer"
+                                  disabled={deleteComment === comment._id}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Delete Comment</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Are you sure you want to delete this comment? This action cannot be undone.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel className='cursor-pointer '>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => handleDeleteComment(comment._id)}
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90 cursor-pointer"
+                                  >
+                                    Delete
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                      )}
+
+                        </div>
+                       
                         <p className="mt-2">{comment.text}</p>
                       </div>
                     </div>
