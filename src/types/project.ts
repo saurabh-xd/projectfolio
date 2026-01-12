@@ -10,7 +10,8 @@ export type Project = {
   isBookmarked: boolean;
   likesCount: number;
   commentsCount: number;
- 
+  createdAt: string | Date;
+  updatedAt: string | Date;
 
    userId?: {
     username?: string;
