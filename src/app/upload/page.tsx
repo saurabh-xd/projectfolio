@@ -33,6 +33,7 @@ const tags = [
   "Frontend",
   "Backend",
   "Full-Stack",
+  "JavaScript",
   "Mobile App",
   "Landing Page",
   "Portfolio",
