@@ -1,14 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import {
-  User,
-  Mail,
-  FolderKanban,
-  LogIn,
-  Camera,
-  Bookmark,
-} from "lucide-react";
+import { FolderKanban, LogIn, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
@@ -74,6 +67,14 @@ function ProfilePage() {
     }
   };
 
+  const handleProjectDeleted = (projectId: string) => {
+    // Remove from user projects
+    setprojects((prev) => prev.filter((p) => p._id !== projectId));
+
+    // // Remove from all projects (affects bookmarks too)
+    // setAllProjects(prev => prev.filter(p => p._id !== projectId));
+  };
+
   //  Handle image upload
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -102,8 +103,6 @@ function ProfilePage() {
           userimage: response.data.userimage,
         },
       });
-
-   
 
       toast.success("Profile image updated!");
     } catch (error) {
@@ -189,7 +188,12 @@ function ProfilePage() {
 
           {/* project tab  */}
           <TabsContent value="projects">
-            <ProjectsCard projects={projects} loading={loadingProjects} />
+            <ProjectsCard
+              projects={projects}
+              loading={loadingProjects}
+              showDelete={true}
+              onProjectDeleted={handleProjectDeleted}
+            />
           </TabsContent>
 
           {/* Bookmarks Tab */}
@@ -197,6 +201,7 @@ function ProfilePage() {
             <ProjectsCard
               projects={bookmarkedProjects}
               loading={loadingBookmarks}
+              showDelete={false}
               emptyState={{
                 icon: (
                   <Bookmark className="w-16 h-16 mx-auto mb-4 text-muted-foreground/30" />

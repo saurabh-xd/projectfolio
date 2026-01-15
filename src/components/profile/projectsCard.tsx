@@ -1,12 +1,25 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '../ui/button'
-import { FolderKanban } from 'lucide-react'
+import { FolderKanban, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Project } from '@/types/project'
 import { Badge } from '../ui/badge'
+import axios from 'axios'
+import { toast } from 'sonner'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 type EmptyState = {
   icon: React.ReactNode;
@@ -19,12 +32,16 @@ type EmptyState = {
 type ProjectsCardProps = {
   projects: Project[];
   loading?: boolean;
-  emptyState?: EmptyState
+  emptyState?: EmptyState;
+  showDelete?: boolean; // ✅ NEW: Control if delete button shows
+  onProjectDeleted?: (projectId: string) => void; 
 }
 
-export default function ProjectsCard({projects, loading=false, emptyState}: ProjectsCardProps ) {
+export default function ProjectsCard({projects, loading=false, emptyState, showDelete=false, onProjectDeleted}: ProjectsCardProps ) {
     
  const router = useRouter();
+ const [deletingProjectId, setDeletingProjectId] = useState<string | null>(null);
+ 
 
  const defaultEmptyState: EmptyState = {
     icon: <FolderKanban className="w-16 h-16 mx-auto mb-4 text-muted-foreground/30" />,
@@ -35,6 +52,36 @@ export default function ProjectsCard({projects, loading=false, emptyState}: Proj
   };
 
    const emptyStateConfig = emptyState || defaultEmptyState;
+
+   const handleDeleteProject = async (projectId: string, e: React.MouseEvent) =>{
+    e.stopPropagation();
+
+    setDeletingProjectId(projectId);
+
+try {
+  
+  await axios.delete(`/api/projects/${projectId}`);
+
+  toast.success('Project deleted successfully')
+
+  if(onProjectDeleted){
+    onProjectDeleted(projectId)
+  }
+
+} catch (error: any) {
+      console.error('Error deleting project:', error);
+      
+      if (error.response?.status === 403) {
+        toast.error('You can only delete your own projects');
+      } else {
+        toast.error('Failed to delete project');
+      }
+    } finally {
+      setDeletingProjectId(null);
+    }
+  };
+
+   
 
     if (loading) {
     return (
@@ -54,12 +101,7 @@ export default function ProjectsCard({projects, loading=false, emptyState}: Proj
   
   return (
       <div className="bg-card rounded-2xl shadow-lg border border-border p-8">
-          {/* <div className="flex  items-center space-x-3 mb-6">
-            <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-              <FolderKanban className="w-5 h-5 text-primary" />
-            </div>
-            <h2 className="text-2xl font-bold text-foreground">Your Projects</h2>
-          </div> */}
+        
           
           {projects.length === 0 ? (
         <div className="text-center py-12">
@@ -82,6 +124,42 @@ export default function ProjectsCard({projects, loading=false, emptyState}: Proj
                   key={project._id}
                   className="group relative bg-card rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-border hover:border-primary/50"
                 >
+
+
+
+ {showDelete && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      className="absolute top-2 right-2 z-10 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                      disabled={deletingProjectId === project._id}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete Project</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to delete "{project.name}"? This will also delete all comments, likes, and bookmarks. This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={(e) => handleDeleteProject(project._id, e)}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+
                   {/* Image Section */}
                   {project.image && (
                     <div className="relative h-48 overflow-hidden bg-muted">
