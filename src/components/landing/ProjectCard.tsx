@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { Bookmark, MessageCircleCode, ThumbsUp } from "lucide-react";
+import { Bookmark, MessageCircleCode, ThumbsUp, Trophy } from "lucide-react";
 import Image from "next/image";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
@@ -14,15 +14,29 @@ type ProjectCardProps = {
     isLiked: boolean;
     likesCount: number;
   };
-   bookmarkState?: {
+  bookmarkState?: {
     isBookmarked: boolean;
   };
   onLike: (projectId: string) => void;
   onBookmark: (projectId: string) => void;
+  rank?: number;
 };
 
-function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark  }: ProjectCardProps) {
+function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark, rank }: ProjectCardProps) {
   const router = useRouter();
+
+  const getRankStyle = (rank: number) => {
+    switch (rank) {
+      case 1:
+        return "bg-yellow-500 text-white";
+      case 2:
+        return "bg-gradient-to-r from-gray-400 to-slate-500 text-white";
+      case 3:
+        return "bg-orange-700";
+      default:
+        return "";
+    }
+  };
 
   return (
     <Card
@@ -32,13 +46,21 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark  }:
     >
       <CardHeader className="p-0">
         {project.image && (
-          <div className="relative h-48 overflow-hidden ">
+          <div className="relative h-48 overflow-hidden">
             <Image
               src={project.image}
               alt={project.name}
               fill
-              className="w-full h-full object-cover  transition-transform duration-300"
+              className="w-full h-full object-cover transition-transform duration-300"
             />
+            {rank && rank <= 3 && (
+              <div
+                className={`absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold shadow-lg ${getRankStyle(rank)}`}
+              >
+                <Trophy className="size-3" />
+                <span>#{rank}</span>
+              </div>
+            )}
           </div>
         )}
       </CardHeader>
@@ -121,8 +143,8 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark  }:
         </div>
 
         {project.tags && project.tags.length > 0 && (
-          <div className="flex gap-1.5 mt-3">
-            {project.tags.map((tag, index) => (
+          <div className="flex gap-1.5 mt-3 flex-wrap">
+            {project.tags.slice(0, 3).map((tag, index) => (
               <Badge
                 className="rounded-sm text-[10px] px-2 py-0.5 font-medium bg-muted hover:bg-muted/80 text-muted-foreground"
                 variant="secondary"
@@ -132,6 +154,15 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark  }:
                 {tag}
               </Badge>
             ))}
+            {project.tags.length > 3 && (
+              <Badge
+                className="rounded-sm text-[10px] px-2 py-0.5 font-medium bg-muted hover:bg-muted/80 text-muted-foreground"
+                variant="secondary"
+                onClick={(e) => e.stopPropagation()}
+              >
+                +{project.tags.length - 3}
+              </Badge>
+            )}
           </div>
         )}
 

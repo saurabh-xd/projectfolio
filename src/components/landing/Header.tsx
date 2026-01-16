@@ -1,11 +1,4 @@
-import {
-  ArrowDown,
-  ArrowDownAZ,
-  ArrowUp,
-  ArrowUpAZ,
-  Search,
-  X,
-} from "lucide-react";
+import { Search, Trophy, X } from "lucide-react";
 import React from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -27,19 +20,19 @@ type HeaderProps = {
   projectCount: number;
   selectedTag: string | null;
   setSelectedTag: (tag: string | null) => void;
+  showTopOnly: boolean;
+  setShowTopOnly: (show: boolean) => void;
 };
 
-const TAG_OPTIONS = [
+const tags = [
   "Frontend",
   "Backend",
   "Full-Stack",
-  "Mobile",
-  "AI/ML",
-  "CLI",
-  "Open Source",
-  "Side Project",
-  "Learning",
-  "Hackathon",
+  "JavaScript",
+  "Mobile App",
+  "Landing Page",
+  "Portfolio",
+  "UI/UX",
 ];
 
 function Header({
@@ -47,14 +40,13 @@ function Header({
   setSearchQuery,
   sortBy,
   setSortBy,
-  projectCount,
   selectedTag,
   setSelectedTag,
+  showTopOnly,
+  setShowTopOnly,
 }: HeaderProps) {
-
   return (
-    <div className=" mb-8 space-y-6">
-
+    <div className=" mb-8 space-y-8">
       {/* //title */}
       <div className="space-y-2 text-center">
         <h1 className="text-4xl md:text-6xl font-bold">
@@ -67,7 +59,7 @@ function Header({
       </div>
 
       {/* Search Bar */}
-      <div className="max-w-2xl mx-auto  px-4">
+      <div className="max-w-2xl mx-auto mb-16 px-4">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input
@@ -89,18 +81,13 @@ function Header({
           )}
         </div>
       </div>
-      
 
-      <div className="flex items-center justify-start gap-4 text-sm">
-        {/* <span className="text-muted-foreground">
-          {projectCount} {projectCount === 1 ? 'project' : 'projects'}
-        </span> */}
-
+      <div className="flex items-center justify-between gap-4 text-sm">
         <Select
           value={sortBy}
           onValueChange={(value: "latest" | "oldest") => setSortBy(value)}
         >
-          <SelectTrigger className="w-37 h-9 cursor-pointer">
+          <SelectTrigger className="w-30 h-9 text-base font-mono cursor-pointer">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -112,36 +99,58 @@ function Header({
         {/* ✅ Filter Bar: Tags + Sort */}
         <div className="px-4  space-y-4">
           {/* Tag Pills */}
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-3 flex-wrap">
             {/* All Button */}
             <Badge
-              variant={selectedTag === null ? "default" : "outline"}
+              variant={
+                selectedTag === null && !showTopOnly ? "secondary" : "outline"
+              }
               className={cn(
-                "cursor-pointer transition-all hover:scale-105",
-                selectedTag === null && "shadow-md"
+                "cursor-pointer transition-all hover:scale-105 px-4 py-2 rounded-3xl font-bold",
+                selectedTag === null && !showTopOnly && "shadow-md"
               )}
-              onClick={() => setSelectedTag(null)}
+              onClick={() => {
+                setSelectedTag(null);
+                setShowTopOnly(false);
+              }}
             >
               All
             </Badge>
 
+            {/* Top 3 Button */}
+            <Badge
+              variant={showTopOnly ? "secondary" : "outline"}
+              className={cn(
+                "cursor-pointer transition-all hover:scale-105 px-4 py-2 rounded-3xl font-bold flex items-center gap-1.5",
+                showTopOnly && "shadow-md bg-primary text-white border-0 "
+              )}
+              onClick={() => {
+                setShowTopOnly(!showTopOnly);
+                setSelectedTag(null);
+              }}
+            >
+              <Trophy className="size-3" />
+              Top 3
+            </Badge>
+
             {/* Tag Buttons */}
-            {TAG_OPTIONS.map((tag) => (
+            {tags.map((tag) => (
               <Badge
                 key={tag}
-                variant={selectedTag === tag ? "default" : "outline"}
+                variant={selectedTag === tag ? "secondary" : "outline"}
                 className={cn(
-                  "cursor-pointer transition-all hover:scale-105",
+                  "cursor-pointer transition-all hover:scale-105 px-4 py-2 rounded-3xl font-bold",
                   selectedTag === tag && "shadow-md"
                 )}
-                onClick={() => setSelectedTag(tag)}
+                onClick={() => {
+                  setSelectedTag(tag);
+                  setShowTopOnly(false);
+                }}
               >
                 {tag}
               </Badge>
             ))}
           </div>
-
-          
         </div>
       </div>
     </div>

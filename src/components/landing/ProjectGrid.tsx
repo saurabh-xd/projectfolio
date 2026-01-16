@@ -11,10 +11,18 @@ import CardSkeleton from "../common/CardSkeleton";
 type ProjectGridProps = {
   projects: Project[];
   loading: boolean;
+  showTopOnly?: boolean;
 };
 
-function ProjectGrid({ projects, loading }: ProjectGridProps) {
+function ProjectGrid({ projects, loading, showTopOnly = false }: ProjectGridProps) {
   const { data: session } = useSession();
+
+  // Only calculate ranks when showTopOnly is active
+  const getProjectRank = (projectId: string): number | undefined => {
+    if (!showTopOnly) return undefined;
+    const index = projects.findIndex((p) => p._id === projectId);
+    return index !== -1 ? index + 1 : undefined;
+  };
 
   const [projectLikes, setProjectLikes] = useState<
     Record<
@@ -161,8 +169,9 @@ const handleBookmark = async (projectId: string) => {
               project={project}
               likeState={likeState}
               onLike={handleLike}
-               bookmarkState={bookmarkState}
-               onBookmark={handleBookmark}
+              bookmarkState={bookmarkState}
+              onBookmark={handleBookmark}
+              rank={getProjectRank(project._id)}
             />
           );
         })

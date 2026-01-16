@@ -5,9 +5,6 @@ import axios from "axios";
 import Header from "@/components/landing/Header";
 import ProjectGrid from "@/components/landing/ProjectGrid";
 import { Project } from "@/types/project";
-import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export default function ExplorePage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -15,6 +12,7 @@ export default function ExplorePage() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<"latest" | "oldest">("latest");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [showTopOnly, setShowTopOnly] = useState<boolean>(false);
 
   //Fetch projects
   useEffect(() => {
@@ -34,13 +32,22 @@ export default function ExplorePage() {
     ? searchFiltered.filter((project) => project.tags?.includes(selectedTag))
     : searchFiltered;
 
-  // sort by latest or oldest
-  const sortedProjects = [...tagFiltered].sort((a, b) => {
-    const dateA = new Date(a.createdAt || 0).getTime();
-    const dateB = new Date(b.createdAt || 0).getTime();
+  // filter top 3 by likes if enabled
+  const topFiltered = showTopOnly
+    ? [...tagFiltered]
+        .sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0))
+        .slice(0, 3)
+    : tagFiltered;
 
-    return sortBy === "latest" ? dateB - dateA : dateA - dateB;
-  });
+  // sort by latest or oldest (skip if showTopOnly to preserve likes order)
+  const sortedProjects = showTopOnly
+    ? topFiltered
+    : [...topFiltered].sort((a, b) => {
+        const dateA = new Date(a.createdAt || 0).getTime();
+        const dateB = new Date(b.createdAt || 0).getTime();
+
+        return sortBy === "latest" ? dateB - dateA : dateA - dateB;
+      });
 
   return (
     <div className="min-h-screen bg-background max-w-6xl mx-auto py-12">
@@ -52,9 +59,15 @@ export default function ExplorePage() {
         projectCount={sortedProjects.length}
         selectedTag={selectedTag}
         setSelectedTag={setSelectedTag}
+        showTopOnly={showTopOnly}
+        setShowTopOnly={setShowTopOnly}
       />
 
-      <ProjectGrid projects={sortedProjects} loading={loading} />
+      <ProjectGrid
+        projects={sortedProjects}
+        loading={loading}
+        showTopOnly={showTopOnly}
+      />
     </div>
   );
 }
