@@ -34,6 +34,7 @@ const tags = [
   "Backend",
   "Full-Stack",
   "JavaScript",
+  "vibe-coding",
   "Mobile App",
   "Landing Page",
   "Portfolio",

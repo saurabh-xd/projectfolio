@@ -133,7 +133,7 @@ try {
                     <Button
                       variant="destructive"
                       size="icon"
-                      className="absolute top-2 right-2 z-10 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-2 right-2 z-10 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                       disabled={deletingProjectId === project._id}
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -148,10 +148,10 @@ try {
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel className='cursor-pointer'>Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={(e) => handleDeleteProject(project._id, e)}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90 cursor-pointer"
                       >
                         Delete
                       </AlertDialogAction>
