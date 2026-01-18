@@ -1,53 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import Header from "@/components/landing/Header";
 import ProjectGrid from "@/components/landing/ProjectGrid";
-import { Project } from "@/types/project";
+import { useProjects } from "@/hooks/useProjects";
+import { useProjectFilters } from "@/hooks/useProjectFilters";
 
 export default function ExplorePage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const { projects, loading } = useProjects();
+
+  const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"latest" | "oldest">("latest");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [showTopOnly, setShowTopOnly] = useState<boolean>(false);
+  const [showTopOnly, setShowTopOnly] = useState(false);
 
-  //Fetch projects
-  useEffect(() => {
-    axios
-      .get("/api/add-projects")
-      .then((res) => setProjects(res.data))
-      .catch((err) => console.error("Error fetching projects:", err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const searchFiltered = projects.filter((project) =>
-    project.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  //filter by tag
-  const tagFiltered = selectedTag
-    ? searchFiltered.filter((project) => project.tags?.includes(selectedTag))
-    : searchFiltered;
-
-  // filter top 3 by likes if enabled
-  const topFiltered = showTopOnly
-    ? [...tagFiltered]
-        .sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0))
-        .slice(0, 3)
-    : tagFiltered;
-
-  // sort by latest or oldest (skip if showTopOnly to preserve likes order)
-  const sortedProjects = showTopOnly
-    ? topFiltered
-    : [...topFiltered].sort((a, b) => {
-        const dateA = new Date(a.createdAt || 0).getTime();
-        const dateB = new Date(b.createdAt || 0).getTime();
-
-        return sortBy === "latest" ? dateB - dateA : dateA - dateB;
-      });
+  const { projects: filteredProjects } = useProjectFilters({
+    projects,
+    searchQuery,
+    sortBy,
+    selectedTag,
+    showTopOnly,
+  });
 
   return (
     <div className="min-h-screen bg-background max-w-6xl mx-auto py-12">
@@ -56,7 +29,7 @@ export default function ExplorePage() {
         setSearchQuery={setSearchQuery}
         sortBy={sortBy}
         setSortBy={setSortBy}
-        projectCount={sortedProjects.length}
+        projectCount={filteredProjects.length}
         selectedTag={selectedTag}
         setSelectedTag={setSelectedTag}
         showTopOnly={showTopOnly}
@@ -64,7 +37,7 @@ export default function ExplorePage() {
       />
 
       <ProjectGrid
-        projects={sortedProjects}
+        projects={filteredProjects}
         loading={loading}
         showTopOnly={showTopOnly}
       />
