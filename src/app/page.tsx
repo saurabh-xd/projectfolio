@@ -23,7 +23,7 @@ export default function ExplorePage() {
   });
 
   return (
-    <div className="min-h-screen bg-background max-w-6xl mx-auto py-12">
+    <div className="min-h-screen bg-background max-w-6xl mx-auto py-6">
       <Header
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
