@@ -196,6 +196,15 @@
   .font-metric { @apply font-mono font-semibold tracking-tighter; }
   .font-heading { @apply font-sans font-semibold leading-tight; }
   .font-body   { @apply font-sans leading-relaxed; }
+  
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
 }
 
 

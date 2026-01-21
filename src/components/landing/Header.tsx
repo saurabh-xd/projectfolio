@@ -46,7 +46,7 @@ function Header({
   setShowTopOnly,
 }: HeaderProps) {
   return (
-    <div className="mb-6 flex flex-col space-y-5">
+    <div className="md:mb-6 mb-4 flex flex-col md:space-y-5 ">
 
       {/* Title  + Search*/}
       <div className="space-y-3">
@@ -54,7 +54,7 @@ function Header({
         <h1 className="text-4xl md:text-6xl font-bold text-center">Explore Projects</h1>
         
         {/* Search  */}
-      <div className="max-w-2xl mb-10 mx-auto w-full ">
+      <div className="max-w-2xl md:mb-10 mb-9 px-2 md:px-0 mx-auto w-full ">
        
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -84,10 +84,10 @@ function Header({
       
 
       {/* Tags and filter */}
-      <div className="flex flex-col md:flex-row items-center justify-between  ">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
         {/* Left: Sort + Top 3 */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-center md:justify-start">
            <Select
             value={sortBy}
             onValueChange={(value: "latest" | "oldest") => setSortBy(value)}
@@ -118,12 +118,12 @@ function Header({
           </Badge>
         </div>
 
-        {/* Right: all + Tags */}
-        <div className="flex items-center gap-2 flex-wrap justify-center md:justify-end">
+        {/* Right: all + Tags - Horizontally scrollable on mobile */}
+        <div className="flex items-center gap-2 overflow-x-auto md:flex-wrap md:justify-end scrollbar-hide px-2 md:px-0">
            <Badge
             variant={selectedTag === null && !showTopOnly ? "secondary" : "outline"}
             className={cn(
-              "cursor-pointer transition-all  px-3 py-1 rounded-full font-normal text-sm",
+              "cursor-pointer transition-all px-3 py-1 rounded-full font-normal text-sm whitespace-nowrap flex-shrink-0",
               selectedTag === null && !showTopOnly ? "shadow-sm" : "hover:bg-muted/50"
             )}
             onClick={() => {
@@ -138,7 +138,7 @@ function Header({
               key={tag}
               variant={selectedTag === tag ? "secondary" : "outline"}
               className={cn(
-                "cursor-pointer transition-all  px-3 py-1 rounded-full font-normal text-sm",
+                "cursor-pointer transition-all px-3 py-1 rounded-full font-normal text-sm whitespace-nowrap flex-shrink-0",
                 selectedTag === tag ? "shadow-sm" : "hover:bg-muted/50"
               )}
               onClick={() => {

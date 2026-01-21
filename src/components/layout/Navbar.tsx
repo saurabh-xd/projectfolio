@@ -22,7 +22,7 @@ function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 p-4 md:p-6 shadow-md border-b-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 p-4 md:p-5 shadow-md border-b-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className=" flex items-center font-bold gap-2">
           <CodeXml className="text-primary" />

@@ -42,16 +42,16 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark, ra
     <Card
       onClick={() => router.push(`/projects/${project._id}`)}
       key={project._id}
-      className="overflow-hidden hover:shadow-lg transition-shadow group pt-0 gap-3 rounded-md cursor-pointer"
+      className="overflow-hidden hover:shadow-lg transition-shadow group py-0 gap-1 rounded-md cursor-pointer"
     >
       <CardHeader className="p-0">
         {project.image && (
-          <div className="relative h-48 overflow-hidden">
+          <div className="relative h-42 sm:h-48 overflow-hidden">
             <Image
               src={project.image}
               alt={project.name}
               fill
-              className="w-full h-full object-cover transition-transform duration-300"
+              className="w-full h-full object-cover transition-transform duration-300 "
             />
             {rank && rank <= 3 && (
               <div
@@ -66,12 +66,12 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark, ra
       </CardHeader>
 
       {/* Content */}
-      <CardContent className="p-4 pt-0  ">
-        <div className="flex justify-between mb-4">
+      <CardContent className="p-3 sm:p-4 py-0">
+        <div className="flex justify-between mb-3 sm:mb-4">
           {/* User Profile + Title */}
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-2 sm:gap-3 flex-1 min-w-0">
             {/* User Avatar */}
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden">
+            <div className="size-8 sm:size-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden">
               {project.userId?.userimage ? (
                 <Image
                   src={project.userId.userimage}
@@ -83,7 +83,7 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark, ra
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-primary font-semibold text-sm">
+                <span className="text-primary font-semibold text-xs sm:text-sm">
                   {project.userId?.username?.charAt(0).toUpperCase() || "U"}
                 </span>
               )}
@@ -91,7 +91,7 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark, ra
 
             {/* Title & User Name */}
             <div className="flex-1 min-w-0">
-              <h2 className="font-bold text-base line-clamp-1 text-foreground">
+              <h2 className="font-bold text-sm sm:text-base line-clamp-1 text-foreground">
                 {project.name}
               </h2>
               <p className="text-xs text-muted-foreground/70">
@@ -104,7 +104,7 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark, ra
           </div>
 
           {/* Links */}
-          <div className="flex gap-3 text-xs font-medium ml-2">
+          <div className="flex gap-3 text-xs font-medium ml-2 shrink-0">
             {project.repoLink && (
               <Link
                 href={project.repoLink}
@@ -170,7 +170,7 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark, ra
       </CardContent>
 
       {/* Footer Actions */}
-      <CardFooter className="px-3 pt-0 justify-around flex gap-2">
+      <CardFooter className="px-2 sm:px-3 py-3 justify-around flex gap-1 sm:gap-2">
         <button
           className="flex gap-1.5  hover:text-primary hover:border-primary/50 transition-colors cursor-pointer"
           onClick={(e) => {
@@ -203,7 +203,7 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark, ra
 
 
         <button 
-        className="flex gap-1.5  hover:text-primary hover:border-primary/50 transition-colors cursor-pointer"
+        className="flex   hover:text-primary hover:border-primary/50 transition-colors cursor-pointer"
           onClick={(e)=>{
             e.stopPropagation();
             onBookmark(project._id);
