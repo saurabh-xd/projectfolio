@@ -51,16 +51,22 @@ export const authOptions: NextAuthOptions = {
         const existingUser = await User.findOne({ email: user.email });
         
         if (!existingUser) {
-          await User.create({
+          const newUser = await User.create({
             email: user.email,
             username: user.name || user.email?.split("@")[0],
             provider: account?.provider,
             userimage: user.image || null,
           });
-
+          // Set user data for JWT
+          user.id = newUser._id.toString();
+          user.username = newUser.username;
+          user.userimage = newUser.userimage;
         }
-        else{
-          user.userimage = existingUser.userimage;
+        else {
+          // Use existing user data
+          user.id = existingUser._id.toString();
+          user.username = existingUser.username;
+          user.userimage = existingUser.userimage || user.image;
         }
       }
       return true;
@@ -70,11 +76,11 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.username = user.username;
-         token.userimage = user.userimage;
+        token.userimage = user.userimage;
       }
 
-       if (trigger === "update" && session?.user?.userimage) {
-        token.userimage = session.user.userimage; // UPDATE token with new image
+      if (trigger === "update" && session?.user?.userimage) {
+        token.userimage = session.user.userimage;
       }
 
       return token;
@@ -84,7 +90,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id;
         session.user.username = token.username;
-         session.user.userimage = token.userimage as string;
+        session.user.userimage = token.userimage as string;
       }
       return session;
     },
