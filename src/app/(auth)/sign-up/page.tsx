@@ -68,15 +68,15 @@ function Signup() {
     }
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-background'>
-        <div className='w-full max-w-md p-8 space-y-8 bg-card rounded-lg shadow-md'>
+    <div className='flex justify-center items-center min-h-screen bg-background px-4 py-6 sm:px-6 sm:py-8'>
+        <div className='w-full max-w-md p-5 sm:p-8 space-y-4 sm:space-y-6 bg-card rounded-lg shadow-md'>
              <div className="text-center">
-            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight lg:text-5xl mb-4 sm:mb-6">
               Sign up</h1>
              
           </div>
              <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
         <FormField
           control={form.control}
           name="username"
@@ -117,7 +117,7 @@ function Signup() {
             </FormItem>
           )}
         /> 
-        <Button type="submit" className='cursor-pointer' disabled={isLoading}>
+        <Button type="submit" className='w-full cursor-pointer h-10 sm:h-11 text-sm sm:text-base' disabled={isLoading}>
           {
             isLoading ? (
               <>
@@ -133,8 +133,8 @@ function Signup() {
       </form>
     </Form>
 
-    <div className="mt-4 text-center">
-              <p>
+    <div className="mt-3 sm:mt-4 text-center">
+              <p className="text-sm sm:text-base">
                 Already a member?{' '}
                 <Link href="/sign-in" className="text-primary hover:text-accent">
                 Sign in

@@ -23,6 +23,8 @@ function Signin() {
 
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+    const [isGithubLoading, setIsGithubLoading] = useState(false)
 
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
@@ -59,6 +61,7 @@ function Signin() {
 
     // Handle Google Sign In
 const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true)
     await signIn('google', {
         callbackUrl: '/'
     })
@@ -66,44 +69,59 @@ const handleGoogleSignIn = async () => {
 
 // Handle GitHub Sign In  
 const handleGithubSignIn = async () => {
+    setIsGithubLoading(true)
     await signIn('github', {
         callbackUrl: '/' 
     })
 }
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-background'>
-        <div className='w-full max-w-md p-8 space-y-6 bg-card rounded-lg  shadow-md'>
+    <div className='flex justify-center items-center min-h-screen bg-background px-4 py-6 sm:px-6 sm:py-8'>
+        <div className='w-full max-w-md p-5 sm:p-8 space-y-4 sm:space-y-6 bg-card rounded-lg shadow-md'>
              <div className="text-center">
-            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight lg:text-5xl mb-4 sm:mb-6">
               Sign In</h1>
              
           </div>
            {/* Google & GitHub Buttons */}
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                     <Button
                         type="button"
                         onClick={handleGoogleSignIn}
-                        className="w-full"
-                        
+                        className="w-full h-10 sm:h-11 text-sm sm:text-base"
+                        disabled={isGoogleLoading || isGithubLoading}
                     >
-                        Continue with Google 
+                        {isGoogleLoading ? (
+                            <>
+                                <Spinner className="h-4 w-4 mr-2" />
+                                Signing in...
+                            </>
+                        ) : (
+                            "Continue with Google"
+                        )}
                     </Button>
 
                     <Button
                         type="button"
                         onClick={handleGithubSignIn}
-                        className="w-full"
-                        
+                        className="w-full h-10 sm:h-11 text-sm sm:text-base"
+                        disabled={isGoogleLoading || isGithubLoading}
                     >
-                        Continue with GitHub 
+                        {isGithubLoading ? (
+                            <>
+                                <Spinner className="h-4 w-4 mr-2" />
+                                Signing in...
+                            </>
+                        ) : (
+                            "Continue with GitHub"
+                        )}
                     </Button>
                 </div>
 
                 {/* OR divider */}
-                <p className="text-center text-muted-foreground ">OR</p>
+                <p className="text-center text-muted-foreground text-sm sm:text-base">OR</p>
              <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
         <FormField
           control={form.control}
           name="email"
@@ -132,7 +150,7 @@ const handleGithubSignIn = async () => {
           )}
         /> 
        
-        <Button type="submit" className=' cursor-pointer' disabled={isLoading}>
+        <Button type="submit" className='w-full cursor-pointer h-10 sm:h-11 text-sm sm:text-base' disabled={isLoading}>
           {isLoading ? (
              <>
                 <Spinner className="h-4 w-4" />
@@ -144,8 +162,8 @@ const handleGithubSignIn = async () => {
       </form>
     </Form>
 
-      <div className="mt-4 text-center">
-              <p>
+      <div className="mt-3 sm:mt-4 text-center">
+              <p className="text-sm sm:text-base">
                Don&apos;t have an account?{' '}
                 <Link href="/sign-up" className="text-primary hover:text-accent">
                 Sign up
