@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import { Providers } from "@/components/common/providers";
 import { Poppins } from "next/font/google"
 import Footer from "@/components/layout/Footer";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +48,7 @@ export default function RootLayout({
 
         </Providers>
        
-       
+        <Analytics />
       </body>
     </html>
   );
