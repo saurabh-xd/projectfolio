@@ -55,7 +55,7 @@ const formSchema = z.object({
   image: z.instanceof(File, { message: "Image is required" }),
   liveLink: z.string().url("Must be a valid URL"),
   repoLink: z.string().url("Must be a valid URL"),
-  tags: z.array(z.string()).min(2, "Select at least 2 tag"),
+  tags: z.array(z.string()).min(1, "Select at least 1 tag"),
 });
 
 function Page() {

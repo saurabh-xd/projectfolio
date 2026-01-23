@@ -1,5 +1,4 @@
 "use client";
-
 import { signOut, useSession } from "next-auth/react";
 import { FolderKanban, LogIn, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,7 @@ import axios from "axios";
 import Link from "next/link";
 import { Project } from "@/types/project";
 import ProfileCard from "@/components/profile/profileCard";
-import ProjectsCard from "@/components/profile/projectsCard";
+import ProjectsCard from "@/components/profile/userProject-Card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function ProfilePage() {
@@ -147,8 +146,8 @@ function ProfilePage() {
     "U";
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen bg-background py-6 sm:py-8 md:py-12 px-3 sm:px-4">
+      <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 md:space-y-8">
         <ProfileCard
           session={session}
           avatarLetter={avatarLetter}
@@ -167,19 +166,19 @@ function ProfilePage() {
             }
           }}
         >
-          <TabsList className="grid w-full grid-cols-2 ">
-            <TabsTrigger value="projects" className="gap-2 cursor-pointer">
-              <FolderKanban className="w-4 h-4" />
-              Your Projects
-              <span className="ml-2 px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary">
+          <TabsList className="grid w-full grid-cols-2 h-auto p-1">
+            <TabsTrigger value="projects" className="gap-1 sm:gap-2 cursor-pointer text-xs sm:text-sm py-2 sm:py-2.5">
+              <FolderKanban className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Your </span>Projects
+              <span className="ml-1 sm:ml-2 px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs rounded-full bg-primary/10 text-primary">
                 {projects.length}
               </span>
             </TabsTrigger>
-            <TabsTrigger value="bookmarks" className="gap-2 cursor-pointer">
-              <Bookmark className="w-4 h-4" />
+            <TabsTrigger value="bookmarks" className="gap-1 sm:gap-2 cursor-pointer text-xs sm:text-sm py-2 sm:py-2.5">
+              <Bookmark className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Bookmarks
               {bookmarkedProjects.length > 0 && (
-                <span className="ml-2 px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary">
+                <span className="ml-1 sm:ml-2 px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs rounded-full bg-primary/10 text-primary">
                   {bookmarkedProjects.length}
                 </span>
               )}
@@ -198,7 +197,7 @@ function ProfilePage() {
 
           {/* Bookmarks Tab */}
           <TabsContent value="bookmarks">
-            <ProjectsCard
+            <ProjectsCard  //user project card
               projects={bookmarkedProjects}
               loading={loadingBookmarks}
               showDelete={false}
