@@ -23,6 +23,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { AxiosError } from "axios";
 
 interface User {
   _id: string;
@@ -132,14 +133,18 @@ export default function ProjectCommentsPage() {
       }
 
       toast.success("Comment deleted successfully");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error deleting comment:", error);
 
-      if (error.response?.status === 403) {
-        toast.error("You can only delete your own comments");
-      } else {
-        toast.error("Failed to delete comment");
-      }
+    if (axios.isAxiosError(error)) {
+    if (error.response?.status === 403) {
+      toast.error("You can only delete your own comments");
+    } else {
+      toast.error("Failed to delete comment");
+    }
+  } else {
+    toast.error("Something went wrong");
+  }
     } finally {
       setDeleteComment(null);
     }

@@ -56,8 +56,8 @@ function Signup() {
             toast.success("user registered successfully")
 
             
-        } catch (error:any) {
-            toast.error(error.message)
+        } catch (error:unknown) {
+            toast.error( error instanceof Error ? error.message : "Something went wrong")
            
            
             

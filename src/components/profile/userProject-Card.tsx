@@ -101,14 +101,18 @@ export default function ProjectsCard({projects, loading=false, emptyState, showD
         onProjectDeleted(projectId)
       }
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting project:', error);
       
-      if (error.response?.status === 403) {
-        toast.error('You can only delete your own projects');
-      } else {
-        toast.error('Failed to delete project');
-      }
+       if (axios.isAxiosError(error)) {
+    if (error.response?.status === 403) {
+      toast.error("You can only delete your own projects");
+    } else {
+      toast.error("Failed to delete project");
+    }
+  } else {
+    toast.error("Something went wrong");
+  }
     } finally {
       setDeletingProjectId(null);
     }
@@ -242,7 +246,7 @@ export default function ProjectsCard({projects, loading=false, emptyState, showD
                       <AlertDialogHeader>
                         <AlertDialogTitle >Delete Project</AlertDialogTitle>
                         <AlertDialogDescription className="text-sm">
-                          Are you sure you want to delete "{project.name}"? This will also delete all comments, likes, and bookmarks. This action cannot be undone.
+                         { `Are you sure you want to delete "${project.name}"? This will also delete all comments, likes, and bookmarks. This action cannot be undone.`}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter >
