@@ -122,7 +122,7 @@ function ProjectCard({ project, likeState, onLike, bookmarkState, onBookmark, ra
                 href={project.liveLink}
                 onClick={(e) => e.stopPropagation()}
                 target="_blank"
-                className="flex items-center gap-1.5 text-primary/80 hover:text-primary transition-colors"
+                className="flex items-center gap-1.5 text-green-400/80 hover:text-green-400 transition-colors"
               >
                 <svg
                   className="size-6"

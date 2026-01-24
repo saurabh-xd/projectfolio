@@ -49,10 +49,15 @@ function Header({
     <div className="md:mb-6 mb-4 flex flex-col md:space-y-5 ">
 
       {/* Title  + Search*/}
-      <div className="space-y-3">
+      <div className=" text-center  space-y-3">
 
-        <h1 className="text-4xl md:text-6xl font-bold text-center">Explore Projects</h1>
-        
+
+        <h1 className="text-4xl md:text-6xl font-bold ">Explore Projects</h1>
+           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+          Discover amazing projects built by developers around the world
+        </p>
+
+
         {/* Search  */}
       <div className="max-w-2xl md:mb-10 mb-9 px-2 md:px-0 mx-auto w-full ">
        
