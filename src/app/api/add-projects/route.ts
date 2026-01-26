@@ -25,7 +25,6 @@ export async function POST(request: NextRequest) {
     const liveLink = formData.get("liveLink") as string;
     const repoLink = formData.get("repoLink") as string;
 
-    // ✅ Parse the tags JSON string back to array
 
     const tagsString = formData.get("tags") as string;
     const tags = JSON.parse(tagsString);

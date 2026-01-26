@@ -34,7 +34,7 @@ export default function ProfileCard( { session,
 
            <div className="relative">
   {/* Avatar Circle */}
-  <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-xl border-4 border-card overflow-hidden">
+  <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-primary rounded-full flex items-center justify-center shadow-xl border-4 border-card overflow-hidden">
     { session.user?.userimage ? (
       <Image
         src={ session.user?.userimage }
