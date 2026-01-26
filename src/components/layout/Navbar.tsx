@@ -52,7 +52,7 @@ function Navbar() {
             </Link>
           )}
 
-          <Link href="/upload">
+     {session && (   <Link href="/upload">
             <Button
               variant={"outline"}
               className="w-full md:w-auto cursor-pointer rounded-2xl border font-bold hover:text-foreground"
@@ -60,6 +60,7 @@ function Navbar() {
               <Upload strokeWidth={3} /> Upload Project
             </Button>
           </Link>
+       )}
 
           <Button
             variant="outline"
