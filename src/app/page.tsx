@@ -5,6 +5,7 @@ import Header from "@/components/landing/Header";
 import ProjectGrid from "@/components/landing/ProjectGrid";
 import { useProjects } from "@/hooks/useProjects";
 import { useProjectFilters } from "@/hooks/useProjectFilters";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function ExplorePage() {
   const { projects, loading } = useProjects();
@@ -13,10 +14,11 @@ export default function ExplorePage() {
   const [sortBy, setSortBy] = useState<"latest" | "oldest">("latest");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [showTopOnly, setShowTopOnly] = useState(false);
+const debouncedSearch = useDebounce(searchQuery, 300);
 
   const { projects: filteredProjects } = useProjectFilters({
     projects,
-    searchQuery,
+    searchQuery: debouncedSearch,
     sortBy,
     selectedTag,
     showTopOnly,

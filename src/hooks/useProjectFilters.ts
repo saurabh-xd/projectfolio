@@ -1,4 +1,3 @@
-// src/hooks/useProjectFilters.ts
 import { Project } from "@/types/project";
 
 interface FilterParams {
@@ -35,7 +34,7 @@ export function useProjectFilters({
         .slice(0, 3)
     : tagFiltered;
 
-  // date sort (skip when showing top)
+  // date sort 
   const sortedProjects = showTopOnly
     ? topFiltered
     : [...topFiltered].sort((a, b) => {
